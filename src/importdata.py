@@ -1,5 +1,10 @@
-from app.models import School
+import os
+import django
+
+os.environ['DJANGO_SETTINGS_MODULE'] = 'schoolpedia.settings'
+django.setup()
 from django.core.files import File
+from app.models import School
 
 lat_list = [
     1.446342,
