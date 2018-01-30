@@ -12,7 +12,7 @@ from sso.utils import send_email
 class AdminView():
     @user_passes_test(lambda u: u.is_superuser)
     def index(request):
-        return render(request, 'app/admin_base.html')
+        return render(request, 'app/admin_baseNew.html')
 
     @user_passes_test(lambda u: u.is_superuser)
     def scheduler_log_list(request):
