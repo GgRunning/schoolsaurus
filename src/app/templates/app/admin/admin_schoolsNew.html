@@ -1,0 +1,44 @@
+{% extends 'app/admin_baseNew.html' %}
+
+{% block content %}
+<div class="container-fluid">
+   <div class="row">
+      <div class="col-md-12">
+         <div class="card">
+            <div class="card-header" data-background-color="purple">
+               <h4 class="title">Schools</h4>
+               <p class="category">List of all schools</p>
+            </div>
+            <div class="card-content table-responsive">
+               <table class="table">
+                  <thead class="text-primary">
+                     <th>S/N</th>
+                     <th>School Name</th>
+                     <th>Postal Code</th>
+                     <th>Express</th>
+                     <th>Normal Academic</th>
+                     <th>Normal Technical</th>
+                     <th></th>
+                  </thead>
+                  <tbody>
+                    {% for school in school_list %}
+                        <tr>
+                            <td>{{ school.id }}</td>
+                            <td><a href="{% url 'app:admin_schools_detail' school.id %}">{{ school.school_name }}</a></td>
+                            <td>{{ school.postal_code }}</td>
+                            <td>{{ school.express_nonaff_lower }} - {{ school.express_nonaff_upper }}</td>
+                            <td>{{ school.normal_academic_nonaff_lower }} - {{ school.normal_academic_nonaff_upper}}</td>
+                            <td>{{ school.normal_technical_nonaff_lower }} - {{ school.normal_technical_nonaff_upper }}</td>
+                            <td>
+                                <a href="{% url 'app:admin_edit_school' school.id %}" class="btn btn-primary btn-sm">Edit</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                  </tbody>
+               </table>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends 'app/admin_baseNew.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid">
+   <div class="row">
+      <div class="col-md-12">
+         <div class="card">
+            <div class="card-header" data-background-color="purple">
+               <h4 class="title">School Information</h4>
+               <p class="category">View School's information</p>
+            </div>
+            <div class="card-content">
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="card card-profile">
+                        <br/>
+                        <div class="card-avatar">
+                           <center><img class="img" src="{% static school.logo_name %}"></img></center>
+                        </div>
+                        <div class="card-content table-responsive">
+                              <table class="table" border="0" style="text-align:center;">
+                                 <tr>
+                                    <td class="text-primary">School Name:</td>
+                                    <td style="width:70%;"> <p>{{ school.school_name }}</p></td>
+                                 </tr>
+                                 <tr>
+                                    <td class="text-primary">Vision:</td>
+                                    <td><p>{{ school.visionstatement_desc }}</p></td>
+                                 </tr>
+                                 <tr>
+                                    <td class="text-primary">Mission:</td>
+                                    <td><p>{{ school.missionstatement_desc }}</p>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                     <td class="text-primary">Principal:</td>
+                                     <td><p>{{ school.principal_name }}</p></td>
+                                   </tr>
+                                   <tr>
+                                      <td class="text-primary">Vice Principal:</td>
+                                      <td><p>
+                                        {{ school.first_vp_name }}<br>
+                                        {{ school.second_vp_name }}<br>
+                                        {{ school.third_vp_name }}<br>
+                                        {{ school.fourth_vp_name }}<br>
+                                        {{ school.fifth_vp_name }}<br>
+                                      </p>
+                                      </td>
+                                    </tr>
+                              </table>
+                              <table class="table" border="0"  style="text-align:center;">
+                                 <thead>
+                                    <th></th>
+                                    <th class="tableTitle">Express</th>
+                                    <th class="tableTitle">Normal Academic</th>
+                                    <th class="tableTitle">Normal Technical</th>
+                                 </thead>
+                                 <tbody>
+                                    <tr>
+                                       <td>Non-Affiliated <br/>(Lower)</td>
+                                       <td>{{ school.express_nonaff_lower }}</td>
+                                       <td>{{ school.normal_academic_nonaff_lower }}</td>
+                                       <td>{{ school.normal_technical_nonaff_lower }}</td>
+                                    </tr>
+                                    <tr>
+                                       <td>Non-Affiliated <br/>(Higher)</td>
+                                       <td>{{ school.express_nonaff_upper }}</td>
+                                       <td>{{ school.normal_academic_nonaff_upper }}</td>
+                                       <td>{{ school.normal_technical_nonaff_upper }}</td>
+                                    </tr>
+                                    <tr>
+                                       <td colspan="4"><a href="{% url 'app:admin_edit_school' school.id %}" class="btn btn-primary center">Edit</a></td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="clearfix"></div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'app/admin_baseNew.html' %}
+
+{% block content %}
+<div class="container-fluid">
+   <div class="row">
+      <div class="col-md-12">
+         <div class="card">
+            <div class="card-header" data-background-color="purple">
+               <h4 class="title">Schedules</h4>
+               <p class="category">List of all Scheulders</p>
+            </div>
+            <a class="btn btn-info btn-md" style="margin-left:20px" href="{% url 'app:run_scheduler' %}"> Manually Refresh API</a>
+            <div class="card-content table-responsive">
+               <table class="table">
+                  <thead class="text-primary">
+                     <th>S/N</th>
+                     <th>Type</th>
+                     <th>School</th>
+                     <th>Field</th>
+                  </thead>
+                  <tbody>
+                    {% for scheduler_log in scheduler_log_list %}
+                        <tr class="active">
+                            <td>{{ scheduler_log.id }}</td>
+                            <td>{{ scheduler_log.get_type_display }}</td>
+                            <td>{% if scheduler_log.school %}{{ scheduler_log.school.school_name }}{% else %}{{ scheduler_log.other_school.school_name }}{% endif %}
+                            <td>{{ scheduler_log.field }}</td>
+                            <td><a href="{% url 'app:admin_schedulers_detail' scheduler_log.id %}" class="btn btn-primary btn-sm">View</a></td>
+                        </tr>
+                    {% endfor %}
+                  </tbody>
+               </table>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock %}

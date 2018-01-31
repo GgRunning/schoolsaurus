@@ -1,0 +1,45 @@
+{% extends 'app/admin_baseNew.html' %}
+
+{% block content %}
+<div class="container-fluid">
+   <div class="row">
+      <div class="col-md-12">
+         <div class="card">
+            <div class="card-header" data-background-color="purple">
+               <h4 class="title">Reports</h4>
+               <p class="category">Note: this page only shows reports to user that is not blocked yet.</p>
+            </div>
+            <div class="card-content table-responsive">
+               <table class="table">
+                  <thead class="text-primary">
+                     <th>S/N</th>
+                     <th>Reporter</th>
+                     <th>User</th>
+                     <th>Comment</th>
+                     <th>School Page</th>
+                     <th>Comment Date</th>
+                     <th></th>
+                  </thead>
+                  <tbody>
+                    {% for report in report_list %}
+                        <tr>
+                            <td>{{ report.id }}</td>
+                            <td>{{ report.reported_by }}</td>
+                            <td>{{ report.comment.created_by }}</td>
+                            <td>{{ report.comment.message }}</td>
+                            <td>{{ report.comment.school.school_name }}</td>
+                            <td>{{ report.created_at }}</td>
+                            <td>
+                                <a href="{% url 'app:admin_block_user' report.comment.created_by.id %}"><i class="material-icons">lock</i></a>
+                                <a href="{% url 'app:admin_ignore_report' report.id %}"><i class="material-icons">clear</i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                  </tbody>
+               </table>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock %}

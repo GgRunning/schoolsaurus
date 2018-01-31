@@ -12,7 +12,8 @@ $(document).ready(function(){
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header" data-background-color="purple">
-                    <h4 class="title">{{ enquiry.message }}</h4>
+                    <h4 class="title">Enquiry</h4>
+                    <p class="card-text"> {{ enquiry.message }} </p>
                 </div>
                 <div class="card-content">
                     <form method="POST">
@@ -33,7 +34,7 @@ $(document).ready(function(){
                         <div class="clearfix"></div>
                     </form>
                 </div>
-
+                {% if enquiry.status == 'A' %}
                   <div class="col-md-12">
                     <h3>Replies</h3>
                     <div class="card" style="padding-left:10px; margin-top:0px;">
@@ -45,6 +46,7 @@ $(document).ready(function(){
                     {% endfor %}
                     </div>
                 </div>
+                {% endif %}
             </div>
         </div>
         <div class="col-md-4">

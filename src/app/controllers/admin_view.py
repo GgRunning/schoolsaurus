@@ -17,12 +17,12 @@ class AdminView():
     @user_passes_test(lambda u: u.is_superuser)
     def scheduler_log_list(request):
         scheduler_log_list = SchedulerLog.objects.all()
-        return render(request, 'app/admin/admin_scheduler_logs.html', {'active': 'scheduler', 'scheduler_log_list': scheduler_log_list})
+        return render(request, 'app/admin/admin_scheduler_logsNew.html', {'active': 'scheduler', 'scheduler_log_list': scheduler_log_list})
 
     @user_passes_test(lambda u: u.is_superuser)
     def scheduler_log_detail(request, log_id):
         scheduler_log = SchedulerLog.objects.get(id=log_id)
-        return render(request, 'app/admin/admin_scheduler_logs_detail.html', {'active': 'scheduler', 'scheduler_log': scheduler_log})
+        return render(request, 'app/admin/admin_scheduler_logs_detailNew.html', {'active': 'scheduler', 'scheduler_log': scheduler_log})
 
     @user_passes_test(lambda u: u.is_superuser)
     def user_list(request):
@@ -32,7 +32,7 @@ class AdminView():
     @user_passes_test(lambda u: u.is_superuser)
     def user_detail(request, user_id):
         user = User.objects.get(id=user_id)
-        return render(request, 'app/admin/admin_users_detail.html', {'active': 'user', 'user': user})
+        return render(request, 'app/admin/admin_users_detailNew.html', {'active': 'user', 'user': user})
 
     @user_passes_test(lambda u: u.is_superuser)
     def block_user(request, user_id):
@@ -51,12 +51,12 @@ class AdminView():
     @user_passes_test(lambda u: u.is_superuser)
     def school_list(request):
         school_list = SecondarySchoolProxy.objects.all()
-        return render(request, 'app/admin/admin_schools.html', {'active': 'school', 'school_list': school_list})
+        return render(request, 'app/admin/admin_schoolsNew.html', {'active': 'school', 'school_list': school_list})
 
     @user_passes_test(lambda u: u.is_superuser)
     def school_detail(request, school_id):
         school = SecondarySchoolProxy.objects.get(id=school_id)
-        return render(request, 'app/admin/admin_schools_detail.html', {'active': 'school', 'school': school})
+        return render(request, 'app/admin/admin_schools_detailNew.html', {'active': 'school', 'school': school})
 
     @user_passes_test(lambda u: u.is_superuser)
     def edit_school(request, school_id):
@@ -69,7 +69,7 @@ class AdminView():
                 return HttpResponseRedirect(reverse('app:admin_schools'))
         else:
             form = SchoolForm(instance=school)
-        return render(request, 'app/admin/admin_edit_school.html', {'active': 'school', 'form': form})
+        return render(request, 'app/admin/admin_edit_schoolNew.html', {'active': 'school', 'form': form})
 
     @user_passes_test(lambda u: u.is_superuser)
     def delete_school(request, school_id):
@@ -115,7 +115,7 @@ class AdminView():
     @user_passes_test(lambda u: u.is_superuser)
     def report_list(request):
         report_list = ReportComment.objects.filter(comment__created_by__is_active=True)
-        return render(request, 'app/admin/admin_reports.html', {'active': 'report', 'report_list': report_list})
+        return render(request, 'app/admin/admin_reportsNew.html', {'active': 'report', 'report_list': report_list})
 
     @user_passes_test(lambda u: u.is_superuser)
     def ignore_report(request, report_id):

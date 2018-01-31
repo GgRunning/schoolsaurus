@@ -1,0 +1,53 @@
+{% extends 'app/admin_baseNew.html' %}
+
+{% block content %}
+<div class="container-fluid">
+   <div class="row">
+      <div class="col-md-12">
+         <div class="card">
+            <div class="card-header" data-background-color="purple">
+               <h4 class="title">Scheduler Information</h4>
+               <p class="category">View scheduler's information</p>
+            </div>
+            <div class="card-content">
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="card card-profile">
+                        <div class="card-content table-responsive">
+                              <table class="table" border="0">
+                                 <tr>
+                                    <td class="text-primary">Type:</td>
+                                    <td>{{ scheduler_log.get_type_display }}</td>
+                                 </tr>
+                                 <tr>
+                                    <td class="text-primary">School:</td>
+                                    <td>{% if scheduler_log.school %}{{ scheduler_log.school.school_name }}{% else %}{{ scheduler_log.other_school.school_name }}{% endif %}</td>
+                                 </tr>
+                                 <tr>
+                                    <td class="text-primary">Field:</td>
+                                    <td>{{ scheduler_log.field }}</td>
+                                  </tr>
+                                  <tr>
+                                    <td class="text-primary">Previous Data:</td>
+                                    <td><pre>{{ scheduler_log.previous_data }}</pre></td>
+                                  </tr>
+                                  <tr>
+                                    <td class="text-primary">New Data:</td>
+                                    <td><pre>{{ scheduler_log.new_data }}</pre></td>
+                                  </tr>
+                                  <tr>
+                                    <td class="text-primary">Created At:</td>
+                                    <td>{{ scheduler_log.created_at }}</td>
+                                  </tr>
+                              </table>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="clearfix"></div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock %}

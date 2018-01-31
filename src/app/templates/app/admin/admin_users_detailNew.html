@@ -1,0 +1,81 @@
+{% extends 'app/admin_baseNew.html' %}
+{% block script %}
+    <script>
+        $(document).ready(function () {
+            $('.readonlyrating').rating('disable', true);
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header" data-background-color="purple">
+                    <h4 class="title">User Information</h4>
+                    <p class="category">View user's information</p>
+                </div>
+                <div class="card-content">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="card card-profile"><br/>
+                        <div class="card-avatar">
+                          <a href="#pablo">
+                             <img class="img" src="/static/faces/marc.jpg" />
+                           </a>
+                         </div>
+                         <div class="content">
+                           <h4 class="card-title" id="userName"> </h4>
+                           {% if user.is_active %}<small class="text-success">Active</small>{% else %}<small class="text-danger">(Blocked)</small>{% endif %}
+                           <h6 class="category text-gray">{{ user.email }}</h6>
+                           {% if user.is_active == True %}
+                           <a href="{% url 'app:admin_block_user' user.id %}" class="btn btn-danger center">Block User</a>
+                           {% else %}
+                           <a href="{% url 'app:admin_unblock_user' user.id %}" class="btn btn-primary center">Unlock User</a>
+                           {% endif %}
+                         </div>
+                       </div>
+                      </div>
+                    </div>
+                    <div class="clearfix"></div>
+                  </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header" data-background-color="purple">
+                    <h4 class="title">Previous Comments</h4>
+                    <p class="category">View user's previous comments</p>
+                </div>
+                <div class="card-content table-responsive">
+                   <table class="table">
+                      <thead class="text-primary">
+                        <th>S/N</th>
+                        <th>School</th>
+                        <th>Rating</th>
+                        <th>Comments</th>
+                        <th>Action</th>
+                      </thead>
+                      <tbody>
+                        {% for comment in user.schoolcomment_set.all %}
+                            <tr>
+                                <td>{{ comment.id }}</td>
+                                <td>{{ comment.school.school_name }} </td>
+                                <td><div class="ui star readonlyrating rating" data-rating="{{ comment.rating }}" data-max-rating="5"></div></td>
+                                <td>{{ comment.message }}</td>
+                                <td>
+                                    <a href="{% url 'app:admin_delete_comment' comment.id %}">
+                                        <i class="material-icons">delete</i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                      </tbody>
+                   </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
