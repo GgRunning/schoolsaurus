@@ -1,0 +1,44 @@
+{% extends 'app/admin_baseNew.html' %}
+
+{% block content %}
+<div class="container-fluid">
+   <div class="row">
+      <div class="col-md-12">
+         <div class="card">
+            <div class="card-header" data-background-color="purple">
+               <h4 class="title">Users</h4>
+               <p class="category">List of all SchoolSaurus users</p>
+            </div>
+            <div class="card-content table-responsive">
+               <table class="table">
+                  <thead class="text-primary">
+                     <th>S/N</th>
+                     <th>First Name</th>
+                     <th>Last Name</th>
+                     <th>Email</th>
+                     <th>Status</th>
+                     <th></th>
+                  </thead>
+                  <tbody>
+                    {% for user in user_list %}
+                        <tr class="{% if user.is_active == False %}error{% endif %}">
+                           <td><a href="{% url 'app:admin_users_detail' user.id %}">{{ user.id }}</a></td>
+                           <td><a href="{% url 'app:admin_users_detail' user.id %}">{{ user.first_name }}</a></td>
+                           <td>{{ user.last_name }}</td>
+                            <td>{{ user.email }}</td>
+                            {% if user.is_active %}
+                            <td class="text-success">Active</td>
+                            {% else %}
+                            <td class="text-danger">Blocked</td>
+                            {% endif %}
+                            <td><a class="btn btn-primary btn-sm" href="{% url 'app:admin_users_detail' user.id %}">View</a></td>
+                        </tr>
+                    {% endfor %}
+                  </tbody>
+               </table>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock %}

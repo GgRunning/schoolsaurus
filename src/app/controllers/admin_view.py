@@ -12,7 +12,7 @@ from sso.utils import send_email
 class AdminView():
     @user_passes_test(lambda u: u.is_superuser)
     def index(request):
-        return render(request, 'app/admin_baseNew.html')
+        return render(request, 'app/admin_baseNew.html', {'active':'admin_home'})
 
     @user_passes_test(lambda u: u.is_superuser)
     def scheduler_log_list(request):
@@ -27,7 +27,7 @@ class AdminView():
     @user_passes_test(lambda u: u.is_superuser)
     def user_list(request):
         user_list = User.objects.all()
-        return render(request, 'app/admin/admin_users.html', {'active': 'user', 'user_list': user_list})
+        return render(request, 'app/admin/admin_usersNew.html', {'active': 'user', 'user_list': user_list})
 
     @user_passes_test(lambda u: u.is_superuser)
     def user_detail(request, user_id):
@@ -80,7 +80,7 @@ class AdminView():
     @user_passes_test(lambda u: u.is_superuser)
     def enquiry_list(request):
         enquiry_list = Enquiry.objects.all()
-        return render(request, 'app/admin/admin_enquiries.html', {'active': 'enquiry', 'enquiry_list': enquiry_list})
+        return render(request, 'app/admin/admin_enquiriesNew.html', {'active': 'enquiry', 'enquiry_list': enquiry_list})
 
     @user_passes_test(lambda u: u.is_superuser)
     def enquiry_detail(request, enquiry_id):
@@ -110,7 +110,7 @@ class AdminView():
                 return HttpResponseRedirect(reverse('app:admin_enquiries'))
         else:
             form = EnquiryAnswerForm()
-        return render(request, 'app/admin/admin_enquiries_detail.html', {'active': 'enquiry', 'enquiry': enquiry, 'form': form})
+        return render(request, 'app/admin/admin_enquiries_detailNew.html', {'active': 'enquiry', 'enquiry': enquiry, 'form': form})
 
     @user_passes_test(lambda u: u.is_superuser)
     def report_list(request):

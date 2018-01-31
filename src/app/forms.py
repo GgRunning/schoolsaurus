@@ -37,6 +37,7 @@ class EnquiryAnswerForm(forms.ModelForm):
     class Meta:
         model = EnquiryAnswer
         fields = ('answer',)
+	
 
 
 class ProfileForm(forms.ModelForm):

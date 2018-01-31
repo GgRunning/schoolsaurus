@@ -33,38 +33,38 @@
          </div>
          <div class="sidebar-wrapper">
             <ul class="nav">
-               <li class="active">
+               <li class="{% if active == 'admin_home' %}active {% endif %}">
                   <a href="{% url 'app:admin' %}">
                      <i class="material-icons">dashboard</i>
                      <p>Home</p>
                   </a>
                </li>
-               <li>
-                  <a href="{% url 'app:admin_users' %}" class="{% if active == 'user' %}active {% endif %}item">
+               <li class="{% if active == 'user' %}active {% endif %}">
+                  <a href="{% url 'app:admin_users' %}" >
                      <i class="material-icons">person</i>
                      <p>Users</p>
                   </a>
                </li>
-               <li>
-                  <a href="{% url 'app:admin_enquiries' %}" class="{% if active == 'enquiry' %}active {% endif %}item">
+               <li class="{% if active == 'enquiry' %}active {% endif %}">
+                  <a href="{% url 'app:admin_enquiries' %}" >
                      <i class="fa fa-envelope" aria-hidden="true"></i>
                      <p>Enquiries</p>
                   </a>
                </li>
-               <li>
-                  <a href="{% url 'app:admin_schools' %}" class="{% if active == 'school' %}active {% endif %}item">
+               <li class="{% if active == 'school' %}active {% endif %}">
+                  <a href="{% url 'app:admin_schools' %}" >
                      <i class="fa fa-graduation-cap" aria-hidden="true"></i>
                      <p>School</p>
                   </a>
                </li>
-               <li>
-                  <a href="{% url 'app:admin_reports' %}" class="{% if active == 'report' %}active {% endif %}item">
+               <li class="{% if active == 'report' %}active {% endif %}">
+                  <a href="{% url 'app:admin_reports' %}">
                      <i class="fa fa-flag" aria-hidden="true"></i>
                      <p>Reports</p>
                   </a>
                </li>
-               <li>
-                  <a href="{% url 'app:admin_schedulers' %}" class="{% if active == 'scheduler' %}active {% endif %}item">
+               <li  class="{% if active == 'scheduler' %}active {% endif %}">
+                  <a href="{% url 'app:admin_schedulers' %}">
                      <i class="fa fa-clock-o" aria-hidden="true"></i>
                      <p>Schedulers</p>
                   </a>
@@ -104,7 +104,9 @@
                </div>
             </div>
          </nav>
+
          <div class="content">
+           {% block content %}
             <div class="container-fluid">
                <div class="row">
                   <div class="col-sm-4">
@@ -206,6 +208,7 @@
                               <span class="text-warning"><i class="fa fa-long-arrow-up"></i> 60% </span> increase in the number of blocked users.
                            </p>
                         </div>
+
                         <div class="card-footer">
                            <div class="stats">
                               <i class="material-icons">access_time</i> updated 4 minutes ago
@@ -215,7 +218,9 @@
                   </div>
                </div>
             </div>
+            {% endblock %}
          </div>
+         
          <footer class="footer">
             <div class="container-fluid">
                <nav class="pull-left">

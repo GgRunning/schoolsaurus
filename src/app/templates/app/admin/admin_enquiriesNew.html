@@ -1,0 +1,46 @@
+{% extends 'app/admin_baseNew.html' %}
+
+{% block content %}
+<div class="container-fluid">
+   <div class="row">
+      <div class="col-md-12">
+         <div class="card">
+            <div class="card-header" data-background-color="purple">
+               <h4 class="title">Enquiries</h4>
+               <p class="category">List of all Enquiries</p>
+            </div>
+            <div class="card-content table-responsive">
+               <table class="table">
+                  <thead class="text-primary">
+                     <th>S/N</th>
+                     <th>Name</th>
+                     <th>Email</th>
+                     <th>Status</th>
+                     <th></th>
+                  </thead>
+                  <tbody>
+                    {% for enquiry in enquiry_list %}
+                        <tr class="{% if enquiry.status == 'A' %}positive{% else %}active{% endif %}" >
+                           <td>{{ enquiry.id }}</td>
+                            <td>{{ enquiry.name }}</td>
+                            <td><a href="{% url 'app:admin_enquiries_detail' enquiry.id %}">{{ enquiry.email }}</td>
+                            {% if enquiry.status == 'A' %}
+                            <td class="text-success">
+                                Answered
+                            </td>
+                            {% else %}
+                            <td td class="text-danger">
+                                Pending
+                            </td>
+                            {% endif %}
+                            <td ><a href="{% url 'app:admin_enquiries_detail' enquiry.id %}">Reply</a></td>
+                        </tr>
+                    {% endfor %}
+                  </tbody>
+               </table>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends 'app/admin_baseNew.html' %}
+{% block script %}
+<script type="text/javascript">
+$(document).ready(function(){
+    $("textarea").attr({"class": "form-control","rows": "5"});
+});
+</script>
+{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header" data-background-color="purple">
+                    <h4 class="title">{{ enquiry.message }}</h4>
+                </div>
+                <div class="card-content">
+                    <form method="POST">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group required">
+                                    <div class="form-group label-floating">
+                                        <label class="control-label"> Enter reply message here</label>
+                                          {{ form.answer }}
+                                        </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary pull-right">Reply</button>
+                        {% csrf_token %}
+                        {{ form.errors }}
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+
+                  <div class="col-md-12">
+                    <h3>Replies</h3>
+                    <div class="card" style="padding-left:10px; margin-top:0px;">
+                    {% for answer in enquiry.enquiryanswer_set.all %}
+                    <h4 class="card-title" data-background-color="purple">{{ answer.answered_by }}</h4>
+                    <p class="card-text">{{ answer.answer }} </br>
+                    <font class="timeStampText"> - {{ answer.created_at }}</font>
+                    </p>
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card card-profile">
+                <div class="card-avatar">
+                    <a href="#">
+                        <img class="img" src="/static/faces/marc.jpg" />
+                    </a>
+                </div>
+                <div class="content">
+                  <h4 class="card-title">{{ enquiry.name }}</h4>
+                  <h6 class="category text-gray">{{ enquiry.email }}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
