@@ -1,11 +1,5 @@
 {% extends 'app/admin_baseNew.html' %}
-{% block script %}
-<script type="text/javascript">
-$(document).ready(function(){
-    $("input").attr({"style":"border:none; width:100%; text-align:center;"});
-});
-</script>
-{% endblock %}
+
 {% block content %}
 <div class="container-fluid">
    <div class="row">
@@ -71,4 +65,11 @@ $(document).ready(function(){
       </div>
    </div>
 </div>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+$(document).ready(function(){
+    $("input").attr({"style":"border:none; width:100%; text-align:center;"});
+});
+</script>
 {% endblock %}

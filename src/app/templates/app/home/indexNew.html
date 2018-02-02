@@ -1,0 +1,96 @@
+{% extends 'app/header_baseNew.html' %}
+{% block content %}
+
+<div class="page-header section-dark" style="background-image: url('/static/faces/schoolbg.jpg')">
+    <div class="filter"></div>
+<div class="content-center">
+  <div class="container">
+
+    <div class="title-brand">
+      <!--<h1 class="presentation-title">Starts</h1>-->
+                <img src="/static/logo.png" />
+
+
+
+    <!--<h2 class="presentation-subtitle text-center">Make your mark with a Free Bootstrap 4 UI Kit! </h2>-->
+
+
+            </div>
+            <form action='/schools/' method='GET' >
+            <div class="input-group">
+                <input type="text" name="score" class="form-control input-md" style="border-radius:4px" placeholder="Enter PSLE SCORE">
+                <button class="btn btn-success btn-md ml-2">GO</button>
+            </div>
+          </form>
+
+</div>
+
+    <!--<div class="moving-clouds" style="background-image: url('assets/img/clouds.png'); ">
+
+    </div>-->
+
+
+</div>
+
+</div>
+
+<div class="main">
+    <div class="section landing-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 ml-auto mr-auto">
+                    <h2 class="text-center">Enquiry Form</h2>
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="text-danger">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <form class="contact-form" method="post" action="{% url 'app:contact_us' %}" accept-charset="UTF-8">
+                      {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Name</label>
+                                <div class="input-group {% if form.name.errors %}text-danger{% endif %}">
+                                    <span class="input-group-addon">
+                                        <i class="nc-icon nc-single-02"></i>
+                                    </span>
+                                    <input type="text" name="name" class="form-control" placeholder="Name">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Email</label>
+                                <div class="input-group {% if form.email.errors %}text-danger{% endif %}">
+                                    <span class="input-group-addon">
+                                        <i class="nc-icon nc-email-85"></i>
+                                    </span>
+                                    <input type="text" name="email" class="form-control" placeholder="Email">
+                                </div>
+                            </div>
+                        </div>
+                        <label>Message</label>
+                        <textarea class="form-control {% if form.message.errors %}text-danger{% endif %}" name="message" rows="4" placeholder="Tell us your thoughts and feelings..."></textarea>
+                        <div class="row">
+                            <div class="col-md-4 ml-auto mr-auto">
+                                <button class="btn btn-danger btn-lg btn-fill">Send Message</button>
+                            </div>
+                        </div>
+                        {% if form.errors %}
+                            <div class="text-danger">
+                                <ul class="list">
+                                    {% for error in form.non_field_errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    </div>
+{% endblock %}

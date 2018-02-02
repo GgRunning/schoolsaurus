@@ -1,0 +1,119 @@
+{% extends 'app/baseUserNew.html' %}
+{% block body %}
+<body>
+    <nav class="navbar navbar-expand-md fixed-top navbar-transparent" color-on-scroll="500">
+        <div class="container">
+            <div class="navbar-translate">
+                <button class="navbar-toggler navbar-toggler-right navbar-burger" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-bar"></span>
+                    <span class="navbar-toggler-bar"></span>
+                    <span class="navbar-toggler-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#"><img src="/static/logo.png" height="60" /></a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-info">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" {% block nav_school%}{% endblock %} href="{% url 'app:school_list' %}">Schools</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" {% block nav_bookmark%}{% endblock %} href="{% url 'app:bookmark_list' %}">Bookmark</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" {% block nav_compare%}{% endblock %} href="{% url 'app:compare_schools' %}">Comparison</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                          <a class="btn " href="{% url 'app:profile' %}">Hi, {{ user }}</a>
+                          <a href="{% url 'sso:logout' %}"  class="btn btn-success btn-round">Logout</a>
+                    </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a data-toggle="modal" href="javascript:void(0)" onclick="openLoginModal();" class="btn btn-danger btn-round">Login</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="wrapper">
+    {% block content %}
+    {% endblock %}
+  </div>
+
+    <!-- Modal -->
+    <div class="modal fade login" id="loginModal">
+        <div class="modal-dialog login animated">
+            <div class="modal-content">
+                <div class="modal-header mt-3">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Login</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box">
+                        <div class="content">
+                              {% if form.errors %}
+                                  {% for error in form.non_field_errors %}
+                                        <div class="error alert alert-danger">{{ error }}</div>
+                                    {% endfor %}
+                              {% else %}
+                                  <div class="error"></div>
+                              {% endif %}
+                            {% if next and not form.errors %}
+                                {% if user.is_authenticated %}
+                                    <p>
+                                        Your account doesn't have access to this page. To proceed, please login with an account that has access.
+                                    </p>
+                                {% else %}
+                                    <p>Please login to see this page.</p>
+                                {% endif %}
+                            {% endif %}
+                            <div class="form loginBox">
+                                <form method="post" action="{% url 'sso:login' %}" accept-charset="UTF-8">
+                                  {% csrf_token %}
+                                    <input id="email" class="form-control" type="text" placeholder="Email" name="username">
+                                    {{ form.username.errors }}
+                                    <input id="password" class="form-control" type="password" placeholder="Password" name="password">
+                                    <input type="hidden" name="next" value="{% if next %}{{ next }}{% else %}/{% endif %}"></input>
+                                    <input class="btn btn-default btn-login" type="submit" type="button" value="Login">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="content registerBox" style="display:none;">
+                            <div class="form">
+                                <form method="post" action="{% url 'sso:register' %}" accept-charset="UTF-8">
+                                  {% csrf_token %}
+                                  <input id="id_first_name" class="form-control" type="text" placeholder="First Name" name="first_name">
+                                  <input id="id_last_name" class="form-control" type="text" placeholder="Last Name" name="last_name">
+                                    <input id="email" class="form-control" type="text" placeholder="Email" name="email">
+                                    <input id="password" class="form-control" type="password" placeholder="Password" name="password1">
+                                    <input id="password_confirmation" class="form-control" type="password" placeholder="Repeat Password" name="password2">
+                                    <input class="btn btn-default btn-register" type="submit" value="Create account" name="commit">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="forgot login-footer">
+                        <span>
+                            Looking to
+                            <a href="javascript: showRegisterForm();">create an account</a>
+                            ?
+                        </span>
+                    </div>
+                    <div class="forgot register-footer" style="display:none">
+                        <center>
+                            <span>Already have an account?</span>
+                            <a href="javascript: showLoginForm();">Login</a>
+                        </center>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </body>
+{% endblock %}

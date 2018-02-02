@@ -132,10 +132,10 @@
                         </div>
                         <button class="ui fluid large teal submit button">Sign Up</button>
                     </div>
-                    {% if form.errors %}
+                    {% if Registerform.errors %}
                         <div class="ui visible error message">
                             <ul class="list">
-                                {% for key, error in form.errors.items %}
+                                {% for key, error in Registerform.errors.items %}
                                     <li>
                                         {{ error.as_text }}
                                     </li>

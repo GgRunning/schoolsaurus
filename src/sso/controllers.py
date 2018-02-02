@@ -46,8 +46,8 @@ def register(request):
         else:
             return render(request, 'sso/register/index.html', {'form': form})
     else:
-        form = UserCreationForm()
-    return render(request, 'sso/register/index.html', {'form': form})
+        Registerform = UserCreationForm()
+    return render(request, 'sso/register/index.html', {'Registerform': Registerform})
 
 
 def verify(request, token):
