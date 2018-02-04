@@ -1501,4 +1501,4 @@ for i in range(len(school_list)):
         school.logo_name = school_logo_image_name[i]
         school.save()
     except School.DoesNotExist:
-        print("NOT EXIST", school)
+        print("NOT EXIST", school_name)
