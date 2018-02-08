@@ -5,7 +5,10 @@ from sso.utils import send_email
 import random
 import string
 from django.contrib.auth.views import LoginView as AuthLoginView
-
+from django.contrib.auth import authenticate
+from django.contrib.auth import login
+from django.http import HttpResponse
+import json
 
 class LoginView(AuthLoginView):
     def get_redirect_url(self):
@@ -13,6 +16,19 @@ class LoginView(AuthLoginView):
             return '/admin'
         return super(LoginView, self).get_redirect_url()
 
+def alogin(request):
+    if request.method == 'POST':
+        user = authenticate(username=request.POST['username'],password=request.POST['password'])
+        if user is not None:
+            login(request, user)
+            if request.user.is_superuser:
+                return HttpResponse('/admin')
+            else:
+                return HttpResponse(request.META.get('HTTP_REFERER'))
+        else:
+            return HttpResponse("fail")
+    else:
+        return HttpResponse(json.dumps({"nothing to see"}), content_type="application/json")
 
 def register(request):
     if request.method == 'POST':

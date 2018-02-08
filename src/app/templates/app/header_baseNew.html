@@ -70,11 +70,10 @@
                                 {% endif %}
                             {% endif %}
                             <div class="form loginBox">
-                                <form method="post" action="{% url 'sso:login' %}" accept-charset="UTF-8">
+                                <form id="login-form" accept-charset="UTF-8" onsubmit="loginAjax(event)" method="post">
                                   {% csrf_token %}
-                                    <input id="email" class="form-control" type="text" placeholder="Email" name="username">
-                                    {{ form.username.errors }}
-                                    <input id="password" class="form-control" type="password" placeholder="Password" name="password">
+                                    <input id="lemail" class="form-control" type="text" placeholder="Email" name="username">
+                                    <input id="lpassword" class="form-control" type="password" placeholder="Password" name="password">
                                     <input type="hidden" name="next" value="{% if next %}{{ next }}{% else %}/{% endif %}"></input>
                                     <input class="btn btn-default btn-login" type="submit" type="button" value="Login">
                                 </form>
@@ -88,9 +87,9 @@
                                   {% csrf_token %}
                                   <input id="id_first_name" class="form-control" type="text" placeholder="First Name" name="first_name">
                                   <input id="id_last_name" class="form-control" type="text" placeholder="Last Name" name="last_name">
-                                    <input id="email" class="form-control" type="text" placeholder="Email" name="email">
-                                    <input id="password" class="form-control" type="password" placeholder="Password" name="password1">
-                                    <input id="password_confirmation" class="form-control" type="password" placeholder="Repeat Password" name="password2">
+                                    <input id="remail" class="form-control" type="text" placeholder="Email" name="email">
+                                    <input id="rpassword" class="form-control" type="password" placeholder="Password" name="password1">
+                                    <input id="rpassword_confirmation" class="form-control" type="password" placeholder="Repeat Password" name="password2">
                                     <input class="btn btn-default btn-register" type="submit" value="Create account" name="commit">
                                 </form>
                             </div>
