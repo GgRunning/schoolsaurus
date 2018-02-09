@@ -174,8 +174,8 @@ def insert_cca_to_db(cca):
                     type='N',
                     new_data = new_cca.cca_name
                 )
-                new_log.save()
-                
+        new_log.save()
+
     except (School.DoesNotExist, OtherSchool.DoesNotExist):
         pass
 
