@@ -90,7 +90,7 @@ function registerAjax(e){
             $('input[type="password"]').val('');
             setTimeout( function(){
             $('#loginModal .modal-dialog').removeClass('shake');
-          }, 3000 );
+          }, 1000 );
         }
       },
       error: function(xhr, errmsg, err)
@@ -106,5 +106,5 @@ function shakeModal(){
              $('input[type="password"]').val('');
              setTimeout( function(){
                 $('#loginModal .modal-dialog').removeClass('shake');
-    }, 3000 );
+    }, 1000 );
 }

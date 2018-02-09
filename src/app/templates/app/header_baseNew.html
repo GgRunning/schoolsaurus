@@ -9,7 +9,7 @@
                     <span class="navbar-toggler-bar"></span>
                     <span class="navbar-toggler-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#"><img src="/static/logo.png" height="60" /></a>
+                <a class="navbar-brand" href="{% url 'app:home' %}"><img src="/static/logo.png" height="60" /></a>
             </div>
             <div class="collapse navbar-collapse" id="navbar-info">
                 <ul class="navbar-nav ml-auto">
@@ -37,11 +37,9 @@
         </div>
     </nav>
 
-    <div class="wrapper">
+
     {% block content %}
     {% endblock %}
-  </div>
-
     <!-- Modal -->
     <div class="modal fade login" id="loginModal">
         <div class="modal-dialog login animated">

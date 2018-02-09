@@ -90,7 +90,7 @@ class PublicView():
                 queryset = queryset.filter(school_name__istartswith=request.GET['alphabet'])
 
         # queryset and pagination
-        paginator = Paginator(queryset, 10)  # one page contains 10 items
+        paginator = Paginator(queryset, 4)  # one page contains 10 items
         page = request.GET.get('page')
         try:
             school_list = paginator.page(page)
@@ -113,7 +113,7 @@ class PublicView():
         params_text_without_alphabet = ''.join(['&{}={}'.format(x[0], x[1]) for x in request.GET.items() if x[0] != 'alphabet'])
         params_text = ''.join(['&{}={}'.format(x[0], x[1]) for x in request.GET.items() if x[0] != 'page'])
 
-        return render(request, 'app/school/school_list.html', {
+        return render(request, 'app/school/school_listNew.html', {
             'school_list': school_list,
             'allow_compare': len(compare_school_id_list) < 6,
             'has_coordinate': has_coordinate,
