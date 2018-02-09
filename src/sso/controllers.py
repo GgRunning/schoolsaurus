@@ -65,6 +65,33 @@ def register(request):
         Registerform = UserCreationForm()
     return render(request, 'sso/register/index.html', {'Registerform': Registerform})
 
+def aregister(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.is_active = False
+            while True:
+                custom_token = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
+                try:
+                    User.objects.get(custom_token=custom_token)
+                except User.DoesNotExist:
+                    break
+            user.custom_token = custom_token
+            user.save()
+
+            full_name = user.get_full_name()
+            content = 'Hi, {} <br><br> Thank you for registering for SchoolPedia, ' \
+                      'Please confirm your email address by clicking the link below. ' \
+                      '<br> <h2><a href=\'http://schoolpedia.herokuapp.com/sso/verify/{}/\'>Validate Account</a></h2>'
+
+            send_email(
+                user.email,
+                'SchoolPedia Registration',
+                content.format(full_name, user.custom_token))
+            return HttpResponse("success")
+        else:
+            return HttpResponse(form.errors.as_text())
 
 def verify(request, token):
     try:

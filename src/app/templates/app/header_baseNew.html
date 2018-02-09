@@ -70,12 +70,12 @@
                                 {% endif %}
                             {% endif %}
                             <div class="form loginBox">
-                                <form id="login-form" accept-charset="UTF-8" onsubmit="loginAjax(event)" method="post">
+                              <form id="login-form" accept-charset="UTF-8" onsubmit="loginAjax(event)" method="post">
                                   {% csrf_token %}
                                     <input id="lemail" class="form-control" type="text" placeholder="Email" name="username">
                                     <input id="lpassword" class="form-control" type="password" placeholder="Password" name="password">
                                     <input type="hidden" name="next" value="{% if next %}{{ next }}{% else %}/{% endif %}"></input>
-                                    <input class="btn btn-default btn-login" type="submit" type="button" value="Login">
+                                    <input class="btn btn-default btn-login" type="submit" value="Login">
                                 </form>
                             </div>
                         </div>
@@ -83,7 +83,7 @@
                     <div class="box">
                         <div class="content registerBox" style="display:none;">
                             <div class="form">
-                                <form method="post" action="{% url 'sso:register' %}" accept-charset="UTF-8">
+                                <form id="register-form" method="post" onsubmit="registerAjax(event)" accept-charset="UTF-8">
                                   {% csrf_token %}
                                   <input id="id_first_name" class="form-control" type="text" placeholder="First Name" name="first_name">
                                   <input id="id_last_name" class="form-control" type="text" placeholder="Last Name" name="last_name">

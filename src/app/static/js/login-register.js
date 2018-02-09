@@ -68,6 +68,38 @@ var datastring = $("#login-form").serialize();
 
 }
 
+function registerAjax(e){
+    e.preventDefault();
+    var datastring = $("#register-form").serialize();
+ $.ajax({
+      url: "sso/aregister/",
+      type:"POST",
+      data: datastring,
+      success: function(data){
+        if(data=="success")
+        {
+            $('registerBox').remove();
+            $('.error').addClass('alert alert-success').append("Registration Success! An email verification has been sent, kindly verify your email to activate your account.");
+        }
+        else {
+            $('#loginModal .modal-dialog').addClass('shake');
+            $('.error').empty();   //reset error message
+
+            $('.error').addClass('alert alert-danger').append("Invalid " + data);
+
+            $('input[type="password"]').val('');
+            setTimeout( function(){
+            $('#loginModal .modal-dialog').removeClass('shake');
+          }, 3000 );
+        }
+      },
+      error: function(xhr, errmsg, err)
+      {
+        alert(xhr.status + ": " + xhr.responseText);
+      }
+    });
+}
+
 function shakeModal(){
     $('#loginModal .modal-dialog').addClass('shake');
              $('.error').addClass('alert alert-danger').html("Invalid email/password combination");

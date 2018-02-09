@@ -89,6 +89,16 @@ class SchedulerLog(models.Model):
     class Meta:
         ordering = ['-created_at']
 
+class SchoolCCA(models.Model):
+    api_id = models.IntegerField(unique=True, blank=True, null=True, default=None)
+    school_name = models.CharField(max_length=200)
+    school_section = models.TextField()
+    cca_group = models.TextField()
+    cca_name = models.TextField()
+    cca_customized_name = models.TextField(null=True)
+
+    class Meta:
+        ordering = ['school_name']
 
 class SchoolComment(models.Model):
     school = models.ForeignKey('app.School')
