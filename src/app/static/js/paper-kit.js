@@ -213,14 +213,40 @@ pk = {
         // Sliders for demo purpose in refine cards section
         if($('#sliderRegular').length != 0 ){
             var rangeSlider = document.getElementById('sliderRegular');
-            noUiSlider.create(rangeSlider, {
-            	start: [ 5000 ],
-            	range: {
-            		'min': [  2000 ],
-            		'max': [ 10000 ]
-            	}
-            });
-        }
+            var distance = document.getElementById('distance');
+            if(distance.value !='50' && distance.value)
+            {
+              noUiSlider.create(rangeSlider, {
+                  start: distance.value,
+                  step: 1,
+              	range: {
+              		'min': [  1 ],
+              		'max': [ 50 ]
+              	}
+              });
+              var stepSliderValueElement = document.getElementById('slider-step-value');
+
+              rangeSlider.noUiSlider.on('update', function (values, handle) {
+                  stepSliderValueElement.innerHTML = values[handle]+" km";
+              });
+            }
+            else {
+              noUiSlider.create(rangeSlider, {
+                  start: [50],
+                  step: 1,
+              	range: {
+              		'min': [  1 ],
+              		'max': [ 50 ]
+              	}
+              });
+              var stepSliderValueElement = document.getElementById('slider-step-value');
+
+              rangeSlider.noUiSlider.on('update', function (values, handle) {
+                  stepSliderValueElement.innerHTML = values[handle]+" km";
+                  });
+            }
+          }
+
         if($('#sliderDouble').length != 0){
             var slider = document.getElementById('sliderDouble');
             noUiSlider.create(slider, {

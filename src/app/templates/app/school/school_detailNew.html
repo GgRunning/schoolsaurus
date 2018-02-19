@@ -1,0 +1,471 @@
+{% extends 'app/header_baseNew.html' %}
+{% block nav_school%}
+    class="active"
+{% endblock %}
+{% load static %}
+{% load app_extras %}
+
+{% block script %}
+    {% if has_coordinate == False %}
+        <script>
+            function run() {
+                if (navigator.geolocation) {
+                    var options = {
+                        enableHighAccuracy: true,
+                        timeout: 15000,
+                        maximumAge: 0
+                    };
+                    navigator.geolocation.getCurrentPosition(showPosition, error, options);
+                } else {
+                    x.innerHTML = "Geolocation is not supported by this browser.";
+                }
+            }
+            function showPosition(position) {
+                var latitude = position.coords.latitude.toString()
+                var longitude = position.coords.longitude.toString()
+                var searchParams = new URLSearchParams(window.location.search);
+                searchParams.set('latitude', latitude.toString())
+                searchParams.set('longitude', longitude.toString())
+                window.location.search = searchParams.toString()
+            }
+            function error(err) {
+                console.warn(`ERROR(${err.code}): ${err.message}`);
+                setTimeout(run, 1000);
+            }
+            run()
+            function initMap() {
+                var center = {
+                    lat: {{ school.lat }},
+                    lng: {{ school.lng }}
+                };
+
+                var map = new google.maps.Map(document.getElementById('map'), {
+                  zoom: 14,
+                  center: center
+                });
+
+
+                var marker = new google.maps.Marker({
+                    position: {
+                        lat: {{ school.lat }},
+                        lng: {{ school.lng }}
+                    },
+                    map: map,
+                    title: "{{ school.school_name }}"
+                });
+            }
+        </script>
+    {% else %}
+        <script>
+            function initMap() {
+                var directionsService = new google.maps.DirectionsService;
+                var directionsDisplay = new google.maps.DirectionsRenderer;
+                var latitude = {{ latitude }}
+                var longitude = {{ longitude }}
+                var searchParams = new URLSearchParams(window.location.search);
+                if (searchParams.has("travelMode")){
+                  var mode = searchParams.get("travelMode");
+                }
+                else {
+                  //default mode is driving
+                  searchParams.set('travelMode','DRIVING');
+                  window.location.search = searchParams.toString();
+                }
+
+                if(mode =="WALKING"){
+                  $('#walk').addClass('active');
+                }
+                else if (mode =="TRANSIT") {
+                  $('#transit').addClass('active');
+                }
+                else {
+                  $('#drive').addClass('active');
+                }
+
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 7,
+                    center: {
+                        lat: latitude,
+                        lng: longitude
+                    }
+                });
+                directionsDisplay.setMap(map);
+                directionsService.route({
+                    origin: new google.maps.LatLng(latitude, longitude),
+                    destination: new google.maps.LatLng({{ school.lat }}, {{ school.lng }}),
+                    travelMode: mode
+                }, function(response, status) {
+                    if (status === 'OK') {
+                        directionsDisplay.setDirections(response);
+                    } else {
+                        window.alert('Directions request failed due to ' + status);
+                    }
+                })
+            }
+        </script>
+    {% endif %}
+
+    <script
+        async
+        defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCUH4ybclQQPb9WiYYoY1gMLNyq3WaUQ1E&callback=initMap">
+    </script>
+    <script>
+    function transportMode(mode){
+      var searchParams = new URLSearchParams(window.location.search);
+      if(mode=="walk")
+        searchParams.set('travelMode','WALKING');
+      else if(mode=="transit")
+        searchParams.set('travelMode','TRANSIT');
+      else
+        searchParams.set('travelMode','DRIVING');
+
+      window.location.search = searchParams.toString();
+    }
+    </script>
+{% endblock %}
+
+{% block content %}
+<div class="wrapper">
+    <div class="page-header page-header-xs" data-parallax="false" style="background-image: url({% static '/faces/antoine-barres.jpg' %} );">
+  <div class="filter"></div>
+        <div class="content">
+            <div class="motto text-center">
+                <h2 class="title-uppercase text-center">{{ school.school_name }}</h2>
+            </div>
+        </div>
+</div>
+    <div class="main">
+        <div class="section">
+            <div class="container">
+                <div class="owner">
+                    <div class="avatar">
+                        <a href="{{ school.url_address }}" target="_blank"><img src="{% static school.logo_name %}" alt="Circle Image" class="img-circle img-no-padding img-responsive"></a>
+                </div>
+                    <div class="name">
+                        <h4>Vision</h4>
+                        <p>{{ school.visionstatement_desc }}</p>
+                        <h4>Mission</h4>
+                        <p>{{ school.missionstatement_desc }}</p>
+                    </div>
+                </div>
+                <br />
+                <div class="nav-tabs-navigation">
+                    <div class="nav-tabs-wrapper">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#incharge" role="tab">In-Charge</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#cutoff" role="tab">Cut-Off Point</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#cca" role="tab">CCA</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Tab panes -->
+                <div class="tab-content following">
+                    <!--In charge content-->
+                    <div class="tab-pane active" id="incharge" role="tabpanel">
+                        <div class="row">
+                            <div class="col-md-6 ml-auto mr-auto">
+                                <ul class="list-unstyled follows">
+                                    <li>
+                                        <div class="row">
+                                            <div class="col-md-2 ml-auto mr-auto ">
+                                                <img src="{% static '/faces/avatar.png' %}" alt="Circle Image" class="img-circle img-no-padding img-responsive">
+                                            </div>
+                                            <div class="col-md-7 col-sm-4">
+                                                <h6>{{ school.principal_name }}<br /><small>Principal</small></h6>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <hr />
+                                    {% if school.first_vp_name != "na" %}
+                                    <li>
+                                        <div class="row">
+                                            <div class="col-md-2 ml-auto mr-auto ">
+                                                <img src="{% static '/faces/avatar.png' %}" alt="Circle Image" class="img-circle img-no-padding img-responsive">
+                                            </div>
+                                            <div class="col-md-7 col-sm-4">
+                                                <h6>{{ school.first_vp_name }}<br /><small>Vice Principal</small></h6>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <hr />
+                                    {% endif %}
+                                    {% if school.second_vp_name != "na" %}
+                                    <li>
+                                        <div class="row">
+                                            <div class="col-md-2 ml-auto mr-auto ">
+                                                <img src="{% static '/faces/avatar.png' %}" alt="Circle Image" class="img-circle img-no-padding img-responsive">
+                                            </div>
+                                            <div class="col-md-7 col-sm-4">
+                                                <h6>{{ school.second_vp_name }}<br /><small>Vice Principal</small></h6>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <hr />
+                                    {% endif %}
+                                    {% if school.third_vp_name != "na" %}
+                                    <li>
+                                        <div class="row">
+                                            <div class="col-md-2 ml-auto mr-auto ">
+                                                <img src="{% static '/faces/avatar.png' %}" alt="Circle Image" class="img-circle img-no-padding img-responsive">
+                                            </div>
+                                            <div class="col-md-7 col-sm-4">
+                                                <h6>{{ school.third_vp_name }}<br /><small>Vice Principal</small></h6>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <hr />
+                                    {% endif %}
+                                    {% if school.fourth_vp_name != "na" %}
+                                    <li>
+                                        <div class="row">
+                                            <div class="col-md-2 ml-auto mr-auto ">
+                                                <img src="{% static '/faces/avatar.png' %}" alt="Circle Image" class="img-circle img-no-padding img-responsive">
+                                            </div>
+                                            <div class="col-md-7 col-sm-4">
+                                                <h6>{{ school.fourth_vp_name }}<br /><small>Vice Principal</small></h6>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <hr />
+                                    {% endif %}
+                                    {% if school.fifth_vp_name != "na" %}
+                                    <li>
+                                        <div class="row">
+                                            <div class="col-md-2 ml-auto mr-auto ">
+                                              <img src="{% static '/faces/avatar.png' %}" alt="Circle Image" class="img-circle img-no-padding img-responsive">
+                                            </div>
+                                            <div class="col-md-7 col-sm-4">
+                                                <h6>{{ school.fifth_vp_name }}<br /><small>Vice Principal</small></h6>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Cut off point content-->
+                    <div class="tab-pane text-center" id="cutoff" role="tabpanel">
+                                <h3 class="text-muted">Express: {{ school.express_nonaff_lower }} - {{ school.express_nonaff_upper }}</h3>
+                                <h3 class="text-muted">Normal Academic: {{ school.normal_academic_nonaff_lower }} - {{ school.normal_academic_nonaff_upper}}</h3>
+                                <h3 class="text-muted">Normal Technical: {{ school.normal_technical_nonaff_lower }} - {{ school.normal_technical_nonaff_upper }}</h3>
+                    </div>
+                    <!--CCA content each row for each category hide if don't exist-->
+                    <div class="tab-pane text-center" id="cca" role="tabpanel">
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-3"><p>CLUB & SOCIETY</p></div>
+                            <div class="col-md-5">
+                              {% if clubs_cca_list %}
+                                {% for club in clubs_cca_list %}
+                                  <p>{{ club.cca_name }}</p>
+                                {% endfor %}
+                              {% else %}
+                              <p>HORTICULTURE CLUB</p>
+                              <p>EDITORIAL BOARD</p>
+                              {% endif %}
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-3"><p>PHYSICAL SPORTS</p></div>
+                            <div class="col-md-5">
+                              {% if phy_cca_list %}
+                                {% for phy in phy_cca_list %}
+                                  <p>{{ phy.cca_name }}</p>
+                                {% endfor %}
+                                {% else %}
+                                <p>BASKETBALL</p>
+                                <p>BADMINTON</p>
+                                <p>TRACK AND FIELD</p>
+                                <p>JUDO</p>
+                              {% endif %}
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-3"><p>UNIFORMED GROUPS</p></div>
+                            <div class="col-md-5">
+                              {% if ug_cca_list %}
+                                {% for ug in ug_cca_list %}
+                                  <p>{{ ug.cca_name }}</p>
+                                {% endfor %}
+                                {% else %}
+                                  <p>NCC</p>
+                                  <p>NPCC</p>
+                              {% endif %}
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-3"><p>VISUAL AND PERFORMING ARTS</p></div>
+                            <div class="col-md-5">
+                              {% if arts_cca_list %}
+                                {% for arts in arts_cca_list %}
+                                  <p>{{ arts.cca_name }}</p>
+                                {% endfor %}
+                                {% else %}
+                                  <p>CHOIR</p>
+                                  <p>DANCE - MODERN</p>
+                                  <p>ORCHESTRA - CHINESE</p>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                    </div>
+                 </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section section-dark">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-5">
+                        <h2 class="title">Transport</h2><br />
+                        <p class="description">
+                            {{ school.address }}<br />
+                            {{ school.postal_code }}<br />
+                        Nearest MRT: {{ school.mrt_desc }}<br />
+                        Bus services: {{ school.bus_desc }}
+                        </p><br />
+                        <!-- Nav pills -->
+                        <ul class="nav nav-pills nav-pills-default" {% if has_coordinate == False %} hidden {% endif %}>
+                            <li class="nav-item">
+                                <a class="nav-link" id="walk" data-toggle="tab" href="#0" onclick="transportMode('walk');" >Walking</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="transit" data-toggle="tab" href="#0" onclick="transportMode('transit');" >Transit</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="drive" data-toggle="tab" href="#0" onclick="transportMode('drive');" >Driving</a>
+                            </li>
+                        </ul>
+                        <!-- Pill panes -->
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="home" role="tabpanel"></div>
+                            <div class="tab-pane" id="profile" role="tabpanel"></div>
+                            <div class="tab-pane" id="messages" role="tabpanel"></div>
+                            <div class="tab-pane" id="settings" role="tabpanel"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div id="map" style="width:100%; height:450px;"></div>
+                    </div>
+                </div>
+                </div>
+        </div>
+
+
+                <div class="section">
+                    <div class="container">
+                        <h2 class="title text-center">Reviews</h2>
+                        {% if school.schoolcomment_set.exists %}
+                                <!--REVIEWS-->
+                                {% for comment in school.schoolcomment_set.all %}
+                                <div class="card card-plain card-blog">
+                                    <div class="row">
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-8">
+                                            <p class="card-description">
+                                              {{ comment.message }}
+                                            </p>
+                                            <p class="author">
+                                                by <a href="#pablo"><b>{{ comment.created_by }}</b></a>, {{comment.created_at }}
+                                            </p>
+                                            {% if comment.rating >= 1 %}
+                                            <i class="fa fa-star text-warning"></i>
+                                            {% endif %}
+                                            {% if comment.rating >= 2 %}
+                                            <i class="fa fa-star text-warning"></i>
+                                            {% endif %}
+                                            {% if comment.rating >= 3 %}
+                                            <i class="fa fa-star text-warning"></i>
+                                            {% endif %}
+                                            {% if comment.rating >= 4 %}
+                                            <i class="fa fa-star text-warning"></i>
+                                            {% endif %}
+                                            {% if comment.rating >= 5 %}
+                                            <i class="fa fa-star text-warning"></i>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-md-2"></div>
+                                    </div>
+                                </div><!--END OF REVIEW-->
+                                {% endfor %}
+                          {% else %}
+                          <div class="card-description">No Reviews Yet</div>
+            						{% endif %}
+                        <center>
+                          {% if user.is_authenticated %}
+                            <button class="btn btn-danger btn-md btn-fill mt-3" data-toggle="modal" data-target="#myModal">Write a review</button>
+                            {% else %}
+                            <button class="btn btn-danger btn-md btn-fill mt-3" data-toggle="modal" onclick="openLoginModal();">Login to Review</button>
+                            {% endif %}
+                        </center>
+                            </div>
+
+              </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="exampleModalLabel">Write a review</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" >
+                      {% csrf_token %}
+                      <input type="hidden" name="rating" value="5" required="" id="id_rating">
+                        <label>Rating:
+                        <i class="fa fa-star text-warning"></i>
+                        <i class="fa fa-star text-warning"></i>
+                        <i class="fa fa-star text-warning"></i>
+                        <i class="fa fa-star text-warning"></i>
+                        <i class="fa fa-star text-warning"></i> </label>
+                        <textarea class="form-control" rows="4" placeholder="Tell us how you feel about this school..." name="message"></textarea>
+                        <center>
+                            <button class="btn btn-danger btn-md btn-fill mt-4" type="submit">Submit</button>
+                        </center>
+                    </form>
+                </div>
+                <!--<div class="modal-footer">
+                    <div class="left-side">
+                        <button type="button" class="btn btn-default btn-link" data-dismiss="modal">Cancel</button>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="right-side">
+                        <button type="button" class="btn btn-danger btn-link">Submit</button>
+                    </div>
+                </div>-->
+            </div>
+        </div>
+    </div>
+
+	<script>
+		/*function writeReview(){
+			var x = document.getElementById("reviewBox");
+			var y = document.getElementById("reviewBtn");
+			x.style.display = "block";
+			y.style.display = "none";
+		}*/
+	</script>
+{% endblock %}

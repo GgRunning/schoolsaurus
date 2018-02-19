@@ -48,7 +48,7 @@ function loginAjax(e){
     e.preventDefault();
 var datastring = $("#login-form").serialize();
  $.ajax({
-      url: "sso/alogin/",
+      url: "/sso/alogin/",
       type:"POST",
       data: datastring,
       success: function(data){
@@ -72,7 +72,7 @@ function registerAjax(e){
     e.preventDefault();
     var datastring = $("#register-form").serialize();
  $.ajax({
-      url: "sso/aregister/",
+      url: "/sso/aregister/",
       type:"POST",
       data: datastring,
       success: function(data){

@@ -1,227 +1,9 @@
 {% extends 'app/header_baseNew.html' %}
 {% block nav_school%}
-    class="item active"
+    class="active"
 {% endblock %}
 {% load static %}
 {% load app_extras %}
-
-{% block script %}
-
-<script>
-    pk.initPopovers();
-</script>
-
-    {% if has_coordinate == False %}
-        <script>
-            function run() {
-                if (navigator.geolocation) {
-                    var options = {
-                        enableHighAccuracy: true,
-                        timeout: 15000,
-                        maximumAge: 0
-                    };
-                    navigator.geolocation.getCurrentPosition(showPosition, error, options);
-                } else {
-                    x.innerHTML = "Geolocation is not supported by this browser.";
-                }
-            }
-            function showPosition(position) {
-                var latitude = position.coords.latitude.toString()
-                var longitude = position.coords.longitude.toString()
-                var searchParams = new URLSearchParams(window.location.search);
-                searchParams.set('latitude', latitude.toString())
-                searchParams.set('longitude', longitude.toString())
-                window.location.search = searchParams.toString()
-            }
-
-            function error(err) {
-                console.warn(`ERROR(${err.code}): ${err.message}`);
-                setTimeout(run, 1000);
-            }
-            run()
-        </script>
-    {% endif %}
-    <script
-        async
-        defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCUH4ybclQQPb9WiYYoY1gMLNyq3WaUQ1E&callback=initMap">
-    </script>
-    <script>
-        function sortAsc () {
-            var searchParams = new URLSearchParams(window.location.search);
-            searchParams.delete('sortAsc');
-            searchParams.delete('page');
-            window.location.search = searchParams.toString();
-        }
-        function sortDesc () {
-            var searchParams = new URLSearchParams(window.location.search);
-            searchParams.set('sortAsc', 'flip');
-            searchParams.delete('page');
-            window.location.search = searchParams.toString();
-        }
-        function removeAlphabet () {
-            var searchParams = new URLSearchParams(window.location.search);
-            searchParams.delete('alphabet');
-            window.location.search = searchParams.toString();
-        }
-        function initMap() {
-            var latStr = '{{ latitude }}';
-            var lngStr = '{{ longitude }}';
-            var latlng = {
-                lat: parseFloat(latStr),
-                lng: parseFloat(lngStr)
-            };
-            if (latlng.lat && latlng.lng) {
-                var geocoder = new google.maps.Geocoder();
-                geocoder.geocode({'location': latlng}, function(results, status) {
-                    if (status === 'OK') {
-                        if (results[0]) {
-                            span = document.getElementById('curentLocationAddress')
-                            span.innerHTML = "Your location: " + results[0].formatted_address
-                        }
-                    }
-                });
-            }
-        }
-        function submitSearch () {
-            var searchParams = new URLSearchParams(window.location.search);
-            score = document.getElementById('scoreSchool')
-
-            if (score.value) {
-              if(score.value<=300 && score.value >=0)
-                searchParams.set('score', score.value)
-                else {
-                  $("#errorMessages").show().append('<li>Please enter valid PSLE score</li>');
-                    return;
-                }
-            } else {
-                searchParams.delete('score')
-            }
-
-            distance = document.getElementById('distanceSchool')
-            input = distance.querySelector('input')
-            if (input.value != 'ALL' && input.value) {
-                searchParams.set('distance', input.value)
-            } else {
-                searchParams.delete('distance')
-            }
-
-            var zoneNorth = document.getElementById('zoneNorth')
-            var zoneSouth = document.getElementById('zoneSouth')
-            var zoneEast = document.getElementById('zoneEast')
-            var zoneWest = document.getElementById('zoneWest')
-            var spIP = document.getElementById('spIP')
-            var spSAP = document.getElementById('spSAP')
-            var spNone = document.getElementById('spNone')
-            var chineseMT = document.getElementById('chineseMT')
-            var malayMT = document.getElementById('malayMT')
-            var tamilMT = document.getElementById('tamilMT')
-            var stmExp = document.getElementById('stmExp')
-            var stmNA = document.getElementById('stmNA')
-            var stmNT = document.getElementById('stmNT')
-
-            if (!zoneNorth.checked) {
-                searchParams.set('zoneNorth', 'false')
-            } else {
-                searchParams.delete('zoneNorth');
-            }
-
-            if (!zoneSouth.checked) {
-                searchParams.set('zoneSouth', 'false')
-            } else {
-                searchParams.delete('zoneSouth');
-            }
-
-            if (!zoneEast.checked) {
-                searchParams.set('zoneEast', 'false')
-            } else {
-                searchParams.delete('zoneEast');
-            }
-
-            if (!zoneWest.checked) {
-                searchParams.set('zoneWest', 'false')
-            } else {
-                searchParams.delete('zoneWest');
-            }
-
-            if (!spIP.checked) {
-                searchParams.set('spIP', 'false')
-            } else {
-                searchParams.delete('spIP');
-            }
-
-            if (!spSAP.checked) {
-                searchParams.set('spSAP', 'false')
-            } else {
-                searchParams.delete('spSAP');
-            }
-
-            if (!spNone.checked) {
-                searchParams.set('spNone', 'false')
-            } else {
-                searchParams.delete('spNone');
-            }
-
-            if (!chineseMT.checked) {
-                searchParams.set('chineseMT', 'false')
-            } else {
-                searchParams.delete('chineseMT');
-            }
-
-            if (!malayMT.checked) {
-                searchParams.set('malayMT', 'false')
-            } else {
-                searchParams.delete('malayMT');
-            }
-
-            if (!tamilMT.checked) {
-                searchParams.set('tamilMT', 'false')
-            } else {
-                searchParams.delete('tamilMT');
-            }
-            /*
-            if (!stExp.checked) {
-                searchParams.set('stExp', 'false')
-            } else {
-                searchParams.delete('stExp');
-            }
-
-            if (!stmNA.checked) {
-                searchParams.set('stmNA', 'false')
-            } else {
-                searchParams.delete('stmNA');
-            }
-
-            if (!stmNT.checked) {
-                searchParams.set('stmNT', 'false')
-            } else {
-                searchParams.delete('stmNT');
-            }*/
-
-            searchParams.delete('page');
-            window.location.search = searchParams.toString()
-        }
-        $(document).ready(function() {
-            $('.browse')
-                .popup({
-                    inline: true,
-                    position: 'bottom left',
-                    on: 'click',
-                    delay: {
-                        show: 300,
-                        hide: 800
-                    }
-                })
-            $('.dropdown').dropdown();
-            $("#scoreSchool").keyup(function(event) {
-                if (event.keyCode === 13) {
-                    $("#submitSearchBtn").click();
-                }
-            });
-
-        })
-    </script>
-{% endblock %}
 
 {% block content %}
 <div class="wrapper">
@@ -262,11 +44,12 @@
                             </div>
             <div class="divider"></div>
                         <div class="row">
+                          {% for school in school_list %}
                                 <div class="col-md-3 col-sm-6 mt-4">
-                                  {% for school in school_list %}
+
                                         <div class="card-container">
                                             <div class="card">
-                                                <div class="front" style="height:350px">
+                                                <div class="front" style="height:450px">
                                                     <div class="cover">
                                                         <img src="{% static '/faces/antoine-barres.jpg' %}" />
                                                     </div>
@@ -279,7 +62,7 @@
                                                         </div>
                                                     </div>
                                                 </div> <!-- end front panel -->
-                                                <div class="back" style="height:350px">
+                                                <div class="back" style="height:450px">
                                                     <div class="header">
                                                         <!--put mission of school, maximum word count at most 100-->
                                                         <h5 class="motto">{{ school.visionstatement_desc }} </h5>
@@ -328,7 +111,7 @@
                                                                             Compared
                                                                         </a>
                                                                     {% else %}
-                                                                        <a class="btn btn-outline-danger btn-round btn-sm disabled">
+                                                                        <br /><br /><a class="btn btn-outline-danger btn-round btn-sm disabled">
                                                                             Max 6 comparison
                                                                         </a>
                                                                     {% endif %}
@@ -340,11 +123,12 @@
                                                 </div> <!-- end back panel -->
                                             </div> <!-- end card -->
                                           </div> <!-- end card-container -->
-                                        {% endfor %}
+
                                     </div>
+                                    {% endfor %}
                                 </div>
 
-                                <div class="row">
+                                <div class="row" style="margin-top:50px">
                                     <nav aria-label="...">
                                         <ul class="pagination">
                                           {% if school_list.has_previous %}
@@ -431,29 +215,52 @@
                 <div id="my-tab-content" class="tab-content">
 
                     <div class="tab-pane active" id="home" role="tabpanel">
+                      <div class="row">
+                          <div class="col-md-5">
+                              <p>PSLE Score</p>
+                          </div>
+                          <div class="col-md-7">
+                              <input type="text" id="scoreSchool" name="score" placeholder="Enter PSLE score" value="{{ params.score }}">
+                              <ul class="alert-danger" id="errorMessages" style="display:none; margin-top:10px;"></ul>
+                          </div>
+                      </div>
+                      <hr />
+                      <div class="row">
+                          <div class="col-md-5">
+                              <p>Distance From Current Location</p>
+                          </div>
+                          <div class="col-md-7">
+                              <p id="curentLocationAddress"></p>
+                              <div id="sliderRegular" class="slider noUi-target noUi-ltr noUi-horizontal noUi-connect"></div>
+                              <!--<input id="sliderRegValue" type="text" />-->
+                                <input type="hidden" value="{{ params.distance }}" id="distance">
+                             <span class="text-muted" id="slider-step-value"></span>
+                          </div>
+                      </div>
+                      <hr />
                         <div class="row">
-                            <div class="col-md-2">
+                            <div class="col-md-5">
                                 <p>Zone</p>
                             </div>
-                            <div class="col-md-10">
+                            <div class="col-md-7">
                                 <div class="form-check">
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="checkbox" value="" checked>
+                                        <input class="form-check-input" id="zoneNorth" type="checkbox" value="" {% if not params.zoneNorth %}checked{% endif %}>
                                         North
                                         <span class="form-check-sign"></span>
                                     </label>
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="checkbox" value="" checked>
+                                        <input class="form-check-input" type="checkbox" value="" id="zoneSouth" {% if not params.zoneSouth %}checked{% endif %}>
                                         South
                                         <span class="form-check-sign"></span>
                                     </label>
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="checkbox" value="" checked>
+                                        <input class="form-check-input" type="checkbox" value=""  id="zoneEast" {% if not params.zoneEast %}checked{% endif %}>
                                         East
                                         <span class="form-check-sign"></span>
                                     </label>
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="checkbox" value="" checked>
+                                        <input class="form-check-input" type="checkbox" value="" id="zoneWest" {% if not params.zoneWest %}checked{% endif %}>
                                         West
                                         <span class="form-check-sign"></span>
                                     </label>
@@ -463,23 +270,23 @@
                         </div>
                         <hr />
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-5">
                                 <p>Special Programme(SP)</p>
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-7">
                                 <div class="form-check">
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="checkbox" value="" checked>
+                                        <input class="form-check-input" type="checkbox" value="" id="spIP" {% if not params.spIP %}checked{% endif %}>
                                         IP
                                         <span class="form-check-sign"></span>
                                     </label>
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="checkbox" value="" checked>
+                                        <input class="form-check-input" type="checkbox" value="" id="spSAP" {% if not params.spSAP %}checked{% endif %}>
                                         SAP
                                         <span class="form-check-sign"></span>
                                     </label>
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="checkbox" value="" checked>
+                                        <input class="form-check-input" type="checkbox" value="" id="spNone" {% if not params.spNone %}checked{% endif %}>
                                         Non SP
                                         <span class="form-check-sign"></span>
                                     </label>
@@ -488,23 +295,23 @@
                         </div>
                         <hr />
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-5">
                                 <p>Mother Tongue</p>
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-7">
                                 <div class="form-check">
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="checkbox" value="" checked>
+                                        <input class="form-check-input" type="checkbox" value="" id="chineseMT" {% if not params.chineseMT %}checked{% endif %}>
                                         Chinese
                                         <span class="form-check-sign"></span>
                                     </label>
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="checkbox" value="" checked>
+                                        <input class="form-check-input" type="checkbox" value="" id="malayMT" {% if not params.malayMT %}checked{% endif %}>
                                         Malay
                                         <span class="form-check-sign"></span>
                                     </label>
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="checkbox" value="" checked>
+                                        <input class="form-check-input" type="checkbox" value="" id="tamilMT" {% if not params.tamilMT %}checked{% endif %}>
                                         Tamil
                                         <span class="form-check-sign"></span>
                                     </label>
@@ -516,61 +323,814 @@
                     <div class="tab-pane" id="profile" role="tabpanel">
                         <div class="row">
                             <div class="col-md-12">
-                                <a href="#" class="btn btn-outline-info" data-toggle="collapse" data-target="#demo">PHYSICAL SPORTS</a>
-                                <div id="demo" class="collapse mt-2">
+                              <a href="#" class="btn btn-outline-info" data-toggle="collapse" data-target="#clubs">CLUBS AND SOCIETIES</a>
+                              <div id="clubs" class="collapse mt-2">
+                                <div class="row">
+                                <div class="col-md-4">
+                                  <div class="form-check">
+                                      <label class="form-check-label">
+                                          <input class="form-check-input" type="checkbox" value="" id="aeroClub" {% if not params.aeroClub %}checked{% endif %}>
+                                          AERO-MODELLING
+                                          <span class="form-check-sign"></span>
+                                      </label>
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <div class="form-check">
+                                      <label class="form-check-label">
+                                          <input class="form-check-input" type="checkbox" value="" id="astroClub" {% if not params.astroClub %}checked{% endif %}>
+                                          ASTRONOMY CLUB
+                                          <span class="form-check-sign"></span>
+                                      </label>
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <div class="form-check">
+                                      <label class="form-check-label">
+                                          <input class="form-check-input" type="checkbox" value="" id="boardgamesClub" {% if not params.boardgamesClub %}checked{% endif %}>
+                                          BOARD GAMES CLUB
+                                          <span class="form-check-sign"></span>
+                                      </label>
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <div class="form-check">
+                                      <label class="form-check-label">
+                                          <input class="form-check-input" type="checkbox" value="" id="commserviceClub" {% if not params.commserviceClub %}checked{% endif %}>
+                                          COMMUNITY SERVICE CLUB
+                                          <span class="form-check-sign"></span>
+                                      </label>
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <div class="form-check">
+                                      <label class="form-check-label">
+                                          <input class="form-check-input" type="checkbox" value="" id="cultureClub" {% if not params.cultureClub %}checked{% endif %}>
+                                          CULTURE CLUB
+                                          <span class="form-check-sign"></span>
+                                      </label>
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <div class="form-check">
+                                      <label class="form-check-label">
+                                          <input class="form-check-input" type="checkbox" value="" id="entrepreneurClub" {% if not params.entrepreneurClub %}checked{% endif %}>
+                                          ENTREPRENEUR CLUB
+                                          <span class="form-check-sign"></span>
+                                      </label>
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <div class="form-check">
+                                      <label class="form-check-label">
+                                          <input class="form-check-input" type="checkbox" value="" id="historyClub" {% if not params.historyClub %}checked{% endif %}>
+                                          HISTORY/ CURRENT AFFAIRS SOCIETY
+                                          <span class="form-check-sign"></span>
+                                      </label>
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <div class="form-check">
+                                      <label class="form-check-label">
+                                          <input class="form-check-input" type="checkbox" value="" id="homeClub" {% if not params.homeClub %}checked{% endif %}>
+                                          HOME ECONOMICS
+                                          <span class="form-check-sign"></span>
+                                      </label>
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <div class="form-check">
+                                      <label class="form-check-label">
+                                          <input class="form-check-input" type="checkbox" value="" id="hortiClub" {% if not params.hortiClub %}checked{% endif %}>
+                                          HORTICULTURE CLUB
+                                          <span class="form-check-sign"></span>
+                                      </label>
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <div class="form-check">
+                                      <label class="form-check-label">
+                                          <input class="form-check-input" type="checkbox" value="" id="infocomClub" {% if not params.infocomClub %}checked{% endif %}>
+                                          INFOCOM CLUB
+                                          <span class="form-check-sign"></span>
+                                      </label>
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <div class="form-check">
+                                      <label class="form-check-label">
+                                          <input class="form-check-input" type="checkbox" value="" id="publicmediaClub" {% if not params.publicmediaClub %}checked{% endif %}>
+                                          PUBLICATION AND MEDIA CLUB
+                                          <span class="form-check-sign"></span>
+                                      </label>
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <div class="form-check">
+                                      <label class="form-check-label">
+                                          <input class="form-check-input" type="checkbox" value="" id="roboticsClub" {% if not params.roboticsClub %}checked{% endif %}>
+                                          ROBOTICS CLUB
+                                          <span class="form-check-sign"></span>
+                                      </label>
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <div class="form-check">
+                                      <label class="form-check-label">
+                                          <input class="form-check-input" type="checkbox" value="" id="scrabbleClub" {% if not params.scrabbleClub %}checked{% endif %}>
+                                          SCRABBLE CLUB
+                                          <span class="form-check-sign"></span>
+                                      </label>
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <div class="form-check">
+                                      <label class="form-check-label">
+                                          <input class="form-check-input" type="checkbox" value="" id="syfcClub" {% if not params.syfcClub %}checked{% endif %}>
+                                          SINGAPORE YOUTH FLYING CLUB
+                                          <span class="form-check-sign"></span>
+                                      </label>
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <div class="form-check">
+                                      <label class="form-check-label">
+                                          <input class="form-check-input" type="checkbox" value="" id="sportsClub" {% if not params.sportsClub %}checked{% endif %}>
+                                          SPORTS CLUB
+                                          <span class="form-check-sign"></span>
+                                      </label>
+                                  </div>
+                                </div>
+                              </div>
+                          </div>
+                        <hr/>
+                                <a href="#" class="btn btn-outline-info" data-toggle="collapse" data-target="#physport">PHYSICAL SPORTS</a>
+                                <div id="physport" class="collapse mt-2">
+                                  <div class="row">
+                									<div class="col-md-4">
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value="" checked>
-                                            CLUBS AND SOCIETIES
-                                            <span class="form-check-sign"></span>
-                                        </label><br />
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value="" checked>
-                                            PHYSICAL SPORTS
-                                            <span class="form-check-sign"></span>
-                                        </label><br />
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value="" checked>
-                                            UNIFORMED GROUPS
-                                            <span class="form-check-sign"></span>
-                                        </label><br />
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value="" checked>
-                                            VISUAL AND PERFORMING ARTS
+                                            <input class="form-check-input" type="checkbox" value="" id="clubCCA" {% if not params.clubCCA %}checked{% endif %} >
+                                            ADVENTURE CLUB
                                             <span class="form-check-sign"></span>
                                         </label>
+                                      </div>
                                     </div>
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" value="" id="phyCCA" {% if not params.phyCCA %}checked{% endif %}>
+                                            AIR RIFLE / SHOOTING
+                                            <span class="form-check-sign"></span>
+                                        </label>
+                                      </div>
+                                    </div>
+                                      <div class="col-md-4">
+                                          <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" value="" id="ugCCA" {% if not params.ugCCA %}checked{% endif %}>
+                                            ARCHERY
+                                            <span class="form-check-sign"></span>
+                                        </label>
+                                      </div>
+                                      </div>
+                                      <div class="col-md-4">
+                                          <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" value="" id="visualartsCCA" {% if not params.visualartsCCA %}checked{% endif %}>
+                                            BADMINTON
+                                            <span class="form-check-sign"></span>
+                                        </label>
+                                      </div>
+                                      </div>
+                                      <div class="col-md-4">
+                                          <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" value="" id="art1" {% if not params.visualartsCCA %}checked{% endif %}>
+                                            BASKETBALL
+                                            <span class="form-check-sign"></span>
+                                        </label>
+                                      </div>
+                                      </div>
+                                            <div class="col-md-4">
+                                                <div class="form-check">
+                                              <label class="form-check-label">
+                                                  <input class="form-check-input" type="checkbox" value="" id="art2" {% if not params.visualartsCCA %}checked{% endif %}>
+                                                  CANOEING/ DRAGON BOAT
+                                                  <span class="form-check-sign"></span>
+                                              </label>
+                                            </div>
+                                          </div>
+                                            <div class="col-md-4">
+                                                <div class="form-check">
+                                              <label class="form-check-label">
+                                                  <input class="form-check-input" type="checkbox" value="" id="art3" {% if not params.visualartsCCA %}checked{% endif %}>
+                                                  CRICKET
+                                                  <span class="form-check-sign"></span>
+                                              </label>
+                                            </div>
+                                          </div>
+                                            <div class="col-md-4">
+                                                <div class="form-check">
+                                              <label class="form-check-label">
+                                                  <input class="form-check-input" type="checkbox" value="" id="art4" {% if not params.visualartsCCA %}checked{% endif %}>
+                                                  FENCING
+                                                  <span class="form-check-sign"></span>
+                                              </label>
+                                            </div>
+                                          </div>
+                                          <div class="col-md-4">
+                                              <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="" id="art4" {% if not params.visualartsCCA %}checked{% endif %}>
+                                                FLOORBALL
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                          <label class="form-check-label">
+                                              <input class="form-check-input" type="checkbox" value="" id="art4" {% if not params.visualartsCCA %}checked{% endif %}>
+                                              FOOTBALL
+                                              <span class="form-check-sign"></span>
+                                          </label>
+                                        </div>
+                                      </div>
+                                      <div class="col-md-4">
+                                          <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" value="" id="art4" {% if not params.visualartsCCA %}checked{% endif %}>
+                                            FRISBEE
+                                            <span class="form-check-sign"></span>
+                                        </label>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                      <label class="form-check-label">
+                                          <input class="form-check-input" type="checkbox" value="" id="art4" {% if not params.visualartsCCA %}checked{% endif %}>
+                                          GOLF
+                                          <span class="form-check-sign"></span>
+                                      </label>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                      <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="checkbox" value="" id="art4" {% if not params.visualartsCCA %}checked{% endif %}>
+                                        GYMNASTICS
+                                        <span class="form-check-sign"></span>
+                                    </label>
+                                  </div>
                                 </div>
-                                <hr />
-                                <a href="#" class="btn btn-outline-info" data-toggle="collapse" data-target="#others">OTHERS</a>
-                                <div id="others" class="collapse mt-2">
+                                <div class="col-md-4">
                                     <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value="" checked>
-                                            CLUBS AND SOCIETIES
-                                            <span class="form-check-sign"></span>
-                                        </label><br />
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value="" checked>
-                                            PHYSICAL SPORTS
-                                            <span class="form-check-sign"></span>
-                                        </label><br />
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value="" checked>
-                                            UNIFORMED GROUPS
-                                            <span class="form-check-sign"></span>
-                                        </label><br />
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value="" checked>
-                                            VISUAL AND PERFORMING ARTS
-                                            <span class="form-check-sign"></span>
-                                        </label>
-                                    </div>
+                                  <label class="form-check-label">
+                                      <input class="form-check-input" type="checkbox" value="" id="art4" {% if not params.visualartsCCA %}checked{% endif %}>
+                                      HANDBALL
+                                      <span class="form-check-sign"></span>
+                                  </label>
                                 </div>
+                              </div>
+                              <div class="col-md-4">
+                                  <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value="" id="art4" {% if not params.visualartsCCA %}checked{% endif %}>
+                                    HOCKEY
+                                    <span class="form-check-sign"></span>
+                                </label>
+                              </div>
                             </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                              <label class="form-check-label">
+                                  <input class="form-check-input" type="checkbox" value="" id="art4" {% if not params.visualartsCCA %}checked{% endif %}>
+                                  JUDO
+                                  <span class="form-check-sign"></span>
+                              </label>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                              <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" value="" id="art4" {% if not params.visualartsCCA %}checked{% endif %}>
+                                KARATE
+                                <span class="form-check-sign"></span>
+                            </label>
+                          </div>
                         </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                          <label class="form-check-label">
+                              <input class="form-check-input" type="checkbox" value="" id="art4" {% if not params.visualartsCCA %}checked{% endif %}>
+                              NETBALL
+                              <span class="form-check-sign"></span>
+                          </label>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                          <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" value="" id="art4" {% if not params.visualartsCCA %}checked{% endif %}>
+                            ROCKWALL CLIMBING
+                            <span class="form-check-sign"></span>
+                        </label>
+                      </div>
                     </div>
+                    <div class="col-md-4">
+                        <div class="form-check">
+                      <label class="form-check-label">
+                          <input class="form-check-input" type="checkbox" value="" id="art4" {% if not params.visualartsCCA %}checked{% endif %}>
+                          RUGBY
+                          <span class="form-check-sign"></span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                      <div class="form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" value="" id="art4" {% if not params.visualartsCCA %}checked{% endif %}>
+                        SAILING
+                        <span class="form-check-sign"></span>
+                    </label>
+                  </div>
                 </div>
+                <div class="col-md-4">
+                    <div class="form-check">
+                  <label class="form-check-label">
+                      <input class="form-check-input" type="checkbox" value="" id="art4" {% if not params.visualartsCCA %}checked{% endif %}>
+                      SEPAK TAKRAW
+                      <span class="form-check-sign"></span>
+                  </label>
+                </div>
+              </div>
+              <div class="col-md-4">
+                  <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="art4" {% if not params.visualartsCCA %}checked{% endif %}>
+                    SILAT
+                    <span class="form-check-sign"></span>
+                </label>
+              </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-check">
+              <label class="form-check-label">
+                  <input class="form-check-input" type="checkbox" value="" id="art4" {% if not params.visualartsCCA %}checked{% endif %}>
+                  SOFTBALL
+                  <span class="form-check-sign"></span>
+              </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-check">
+            <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" value="" id="art4" {% if not params.visualartsCCA %}checked{% endif %}>
+                SQUASH
+                <span class="form-check-sign"></span>
+            </label>
+          </div>
+        </div><div class="col-md-4">
+            <div class="form-check">
+          <label class="form-check-label">
+              <input class="form-check-input" type="checkbox" value="" id="art4" {% if not params.visualartsCCA %}checked{% endif %}>
+              SWIMMING
+              <span class="form-check-sign"></span>
+          </label>
+        </div>
+      </div><div class="col-md-4">
+          <div class="form-check">
+        <label class="form-check-label">
+            <input class="form-check-input" type="checkbox" value="" id="art4" {% if not params.visualartsCCA %}checked{% endif %}>
+            SYNCHRONISED SWIMMING
+            <span class="form-check-sign"></span>
+        </label>
+      </div>
+    </div><div class="col-md-4">
+        <div class="form-check">
+      <label class="form-check-label">
+          <input class="form-check-input" type="checkbox" value="" id="art4" {% if not params.visualartsCCA %}checked{% endif %}>
+          TABLE TENNIS
+          <span class="form-check-sign"></span>
+      </label>
+    </div>
+  </div><div class="col-md-4">
+      <div class="form-check">
+    <label class="form-check-label">
+        <input class="form-check-input" type="checkbox" value="" id="art4" {% if not params.visualartsCCA %}checked{% endif %}>
+        TAEKWONDO
+        <span class="form-check-sign"></span>
+    </label>
+  </div>
+</div><div class="col-md-4">
+    <div class="form-check">
+  <label class="form-check-label">
+      <input class="form-check-input" type="checkbox" value="" id="art4" {% if not params.visualartsCCA %}checked{% endif %}>
+      TCHOUKBALL
+      <span class="form-check-sign"></span>
+  </label>
+</div>
+</div><div class="col-md-4">
+    <div class="form-check">
+  <label class="form-check-label">
+      <input class="form-check-input" type="checkbox" value="" id="art4" {% if not params.visualartsCCA %}checked{% endif %}>
+      TENNIS
+      <span class="form-check-sign"></span>
+  </label>
+</div>
+</div><div class="col-md-4">
+    <div class="form-check">
+  <label class="form-check-label">
+      <input class="form-check-input" type="checkbox" value="" id="art4" {% if not params.visualartsCCA %}checked{% endif %}>
+      TEN-PIN BOWLING
+      <span class="form-check-sign"></span>
+  </label>
+</div>
+</div><div class="col-md-4">
+    <div class="form-check">
+  <label class="form-check-label">
+      <input class="form-check-input" type="checkbox" value="" id="art4" {% if not params.visualartsCCA %}checked{% endif %}>
+      TOUCH FOOTBALL
+      <span class="form-check-sign"></span>
+  </label>
+</div>
+</div><div class="col-md-4">
+    <div class="form-check">
+  <label class="form-check-label">
+      <input class="form-check-input" type="checkbox" value="" id="art4" {% if not params.visualartsCCA %}checked{% endif %}>
+      TOUCH RUGBY
+      <span class="form-check-sign"></span>
+  </label>
+</div>
+</div><div class="col-md-4">
+    <div class="form-check">
+  <label class="form-check-label">
+      <input class="form-check-input" type="checkbox" value="" id="art4" {% if not params.visualartsCCA %}checked{% endif %}>
+      TRAMPOLINE
+      <span class="form-check-sign"></span>
+  </label>
+</div>
+</div>
+<div class="col-md-4">
+    <div class="form-check">
+  <label class="form-check-label">
+      <input class="form-check-input" type="checkbox" value="" id="art4" {% if not params.visualartsCCA %}checked{% endif %}>
+      TRAMPOLINE
+      <span class="form-check-sign"></span>
+  </label>
+</div>
+</div>
+<div class="col-md-4">
+    <div class="form-check">
+  <label class="form-check-label">
+      <input class="form-check-input" type="checkbox" value="" id="art4" {% if not params.visualartsCCA %}checked{% endif %}>
+      VOLLEYBALL
+      <span class="form-check-sign"></span>
+  </label>
+</div>
+</div>
+<div class="col-md-4">
+    <div class="form-check">
+  <label class="form-check-label">
+      <input class="form-check-input" type="checkbox" value="" id="art4" {% if not params.visualartsCCA %}checked{% endif %}>
+      WATER POLO
+      <span class="form-check-sign"></span>
+  </label>
+</div>
+</div>
+<div class="col-md-4">
+    <div class="form-check">
+  <label class="form-check-label">
+      <input class="form-check-input" type="checkbox" value="" id="art4" {% if not params.visualartsCCA %}checked{% endif %}>
+      WEIGHTLIFTING
+      <span class="form-check-sign"></span>
+  </label>
+</div>
+</div>
+<div class="col-md-4">
+    <div class="form-check">
+  <label class="form-check-label">
+      <input class="form-check-input" type="checkbox" value="" id="art4" {% if not params.visualartsCCA %}checked{% endif %}>
+      WUSHU
+      <span class="form-check-sign"></span>
+  </label>
+</div>
+</div>
+            </div>
+        </div>
+        <hr />
+        <a href="#" class="btn btn-outline-info" data-toggle="collapse" data-target="#uniformgrp">UNIFORMED GROUPS</a>
+        <div id="uniformgrp" class="collapse mt-2">
+          <div class="row">
+          <div class="col-md-4">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="bbUG" {% if not params.bbUG %}checked{% endif %}>
+                    BOYS' BRIGADE
+                    <span class="form-check-sign"></span>
+                </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="browniesUG" {% if not params.browniesUG %}checked{% endif %}>
+                    BROWNIES
+                    <span class="form-check-sign"></span>
+                </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="ggUG" {% if not params.ggUG %}checked{% endif %}>
+                    GIRL GUIDES
+                    <span class="form-check-sign"></span>
+                </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="gbUG" {% if not params.gbUG %}checked{% endif %}>
+                    GIRLS' BRIGADE
+                    <span class="form-check-sign"></span>
+                </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="ncdccUG" {% if not params.ncdccUG %}checked{% endif %}>
+                    NCDCC
+                    <span class="form-check-sign"></span>
+                </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="ncclandUG" {% if not params.ncclandUG %}checked{% endif %}>
+                    NCC (LAND)
+                    <span class="form-check-sign"></span>
+                </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="nccseaUG" {% if not params.nccseaUG %}checked{% endif %}>
+                    NCC (SEA)
+                    <span class="form-check-sign"></span>
+                </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="nccairUG" {% if not params.nccairUG %}checked{% endif %}>
+                    NCC (AIR)
+                    <span class="form-check-sign"></span>
+                </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="npccUG" {% if not params.npccUG %}checked{% endif %}>
+                    NPCC
+                    <span class="form-check-sign"></span>
+                </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="npccseaUG" {% if not params.npccseaUG %}checked{% endif %}>
+                    NPCC (SEA)
+                    <span class="form-check-sign"></span>
+                </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="scoutsUG" {% if not params.scoutsUG %}checked{% endif %}>
+                    SCOUTS
+                    <span class="form-check-sign"></span>
+                </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="redcrossUG" {% if not params.redcrossUG %}checked{% endif %}>
+                    SINGAPORE RED CROSS SOCIETY
+                    <span class="form-check-sign"></span>
+                </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="stjohnUG" {% if not params.stjohnUG %}checked{% endif %}>
+                    ST. JOHN BRIGADE
+                    <span class="form-check-sign"></span>
+                </label>
+            </div>
+          </div>
+        </div>
+    </div>
+    <hr />
+        <a href="#" class="btn btn-outline-info" data-toggle="collapse" data-target="#visualarts">VISUAL AND PERFORMING ARTS</a>
+        <div id="visualarts" class="collapse mt-2">
+          <div class="row">
+          <div class="col-md-4">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="3danimationARTS" {% if not params.3danimationARTS %}checked{% endif %}>
+                    3-D ANIMATION
+                    <span class="form-check-sign"></span>
+                </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="brassARTS" {% if not params.brassARTS %}checked{% endif %}>
+                    BAND - BRASS
+                    <span class="form-check-sign"></span>
+                </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="concertARTS" {% if not params.concertARTS %}checked{% endif %}>
+                    BAND - CONCERT
+                    <span class="form-check-sign"></span>
+                </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="militaryARTS" {% if not params.militaryARTS %}checked{% endif %}>
+                    BAND - MILITARY
+                    <span class="form-check-sign"></span>
+                </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="symohonicARTS" {% if not params.symohonicARTS %}checked{% endif %}>
+                    BAND - SYMPHONIC
+                    <span class="form-check-sign"></span>
+                </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="calligraphyARTS" {% if not params.calligraphyARTS %}checked{% endif %}>
+                    CALLIGRAPHY SOCIETY
+                    <span class="form-check-sign"></span>
+                </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="choirARTS" {% if not params.choirARTS %}checked{% endif %}>
+                    CHOIR
+                    <span class="form-check-sign"></span>
+                </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="creativeARTS" {% if not params.creativeARTS %}checked{% endif %}>
+                    CREATIVE DESIGN CLUB
+                    <span class="form-check-sign"></span>
+                </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="aestheticsARTS" {% if not params.aestheticsARTS %}checked{% endif %}>
+                    CULTURE/ AESTHETICS CLUB
+                    <span class="form-check-sign"></span>
+                </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="danceARTS" {% if not params.danceARTS %}checked{% endif %}>
+                    DANCE
+                    <span class="form-check-sign"></span>
+                </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="digitalARTS" {% if not params.digitalARTS %}checked{% endif %}>
+                    DIGITAL DESIGN
+                    <span class="form-check-sign"></span>
+                </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="ensembleARTS" {% if not params.ensembleARTS %}checked{% endif %}>
+                    ENSEMBLE
+                    <span class="form-check-sign"></span>
+                </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="liondanceARTS" {% if not params.liondanceARTS %}checked{% endif %}>
+                    LION DANCE TROUPE
+                    <span class="form-check-sign"></span>
+                </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="mediaARTS" {% if not params.mediaARTS %}checked{% endif %}>
+                    MEDIA CLUB
+                    <span class="form-check-sign"></span>
+                </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="dramaARTS" {% if not params.dramaARTS %}checked{% endif %}>
+                    MUSIC, DRAMA & DANCE
+                    <span class="form-check-sign"></span>
+                </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="orchestraARTS" {% if not params.orchestraARTS %}checked{% endif %}>
+                    ORCHESTRA
+                    <span class="form-check-sign"></span>
+                </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="photoARTS" {% if not params.photoARTS %}checked{% endif %}>
+                    PHOTOGRAPHY SOCIETY
+                    <span class="form-check-sign"></span>
+                </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="potteryARTS" {% if not params.potteryARTS %}checked{% endif %}>
+                    POTTERY CLUB
+                    <span class="form-check-sign"></span>
+                </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="tapARTS" {% if not params.tapARTS %}checked{% endif %}>
+                    TAP DANCING
+                    <span class="form-check-sign"></span>
+                </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" id="theatreARTS" {% if not params.theatreARTS %}checked{% endif %}>
+                    THEATRE CLUB
+                    <span class="form-check-sign"></span>
+                </label>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
             </div>
             <div class="modal-footer">
                 <div class="left-side">
@@ -578,10 +1138,246 @@
                 </div>
                 <div class="divider"></div>
                 <div class="right-side">
-                    <button type="button" class="btn btn-danger btn-link">Submit</button>
+                    <button type="button" class="btn btn-danger btn-link" id="submitSearchBtn" onclick="submitSearch()">Submit</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block script %}
+
+<script>
+    pk.initPopovers();
+</script>
+
+    {% if has_coordinate == False %}
+        <script>
+            function run() {
+                if (navigator.geolocation) {
+                    var options = {
+                        enableHighAccuracy: true,
+                        timeout: 15000,
+                        maximumAge: 0
+                    };
+                    navigator.geolocation.getCurrentPosition(showPosition, error, options);
+                } else {
+                    x.innerHTML = "Geolocation is not supported by this browser.";
+                }
+            }
+            function showPosition(position) {
+                var latitude = position.coords.latitude.toString()
+                var longitude = position.coords.longitude.toString()
+                var searchParams = new URLSearchParams(window.location.search);
+                searchParams.set('latitude', latitude.toString())
+                searchParams.set('longitude', longitude.toString())
+                window.location.search = searchParams.toString()
+            }
+
+            function error(err) {
+                console.warn(`ERROR(${err.code}): ${err.message}`);
+                setTimeout(run, 1000);
+            }
+            run()
+        </script>
+    {% endif %}
+    <script
+        async
+        defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCUH4ybclQQPb9WiYYoY1gMLNyq3WaUQ1E&callback=initMap">
+    </script>
+    <script>
+        function sortAsc () {
+            var searchParams = new URLSearchParams(window.location.search);
+            searchParams.delete('sortAsc');
+            searchParams.delete('page');
+            window.location.search = searchParams.toString();
+        }
+        function sortDesc () {
+            var searchParams = new URLSearchParams(window.location.search);
+            searchParams.set('sortAsc', 'flip');
+            searchParams.delete('page');
+            window.location.search = searchParams.toString();
+        }
+        function removeAlphabet () {
+            var searchParams = new URLSearchParams(window.location.search);
+            searchParams.delete('alphabet');
+            window.location.search = searchParams.toString();
+        }
+        function initMap() {
+            var latStr = '{{ latitude }}';
+            var lngStr = '{{ longitude }}';
+            var latlng = {
+                lat: parseFloat(latStr),
+                lng: parseFloat(lngStr)
+            };
+            if (latlng.lat && latlng.lng) {
+                var geocoder = new google.maps.Geocoder();
+                geocoder.geocode({'location': latlng}, function(results, status) {
+                    if (status === 'OK') {
+                        if (results[0]) {
+                            span = document.getElementById('curentLocationAddress')
+                            span.innerHTML = "Location: " + results[0].formatted_address
+                        }
+                    }
+                });
+            }
+        }
+
+        function submitSearch () {
+
+            var searchParams = new URLSearchParams(window.location.search);
+
+            score = document.getElementById('scoreSchool')
+
+            if (score.value) {
+              if(score.value<=300 && score.value >=0)
+                searchParams.set('score', score.value)
+                else {
+                  $("#errorMessages").empty();
+                  $("#errorMessages").show().append('<li>Please enter valid PSLE score</li>');
+                    return;
+                }
+            } else {
+                searchParams.delete('score')
+            }
+
+            distance = document.getElementById('sliderRegular').noUiSlider.get();
+
+            if (distance != '50.00') {
+                searchParams.set('distance', distance)
+            } else {
+                searchParams.delete('distance')
+            }
+
+            var zoneNorth = document.getElementById('zoneNorth')
+            var zoneSouth = document.getElementById('zoneSouth')
+            var zoneEast = document.getElementById('zoneEast')
+            var zoneWest = document.getElementById('zoneWest')
+            var spIP = document.getElementById('spIP')
+            var spSAP = document.getElementById('spSAP')
+            var spNone = document.getElementById('spNone')
+            var chineseMT = document.getElementById('chineseMT')
+            var malayMT = document.getElementById('malayMT')
+            var tamilMT = document.getElementById('tamilMT')
+            var stmExp = document.getElementById('stmExp')
+            var stmNA = document.getElementById('stmNA')
+            var stmNT = document.getElementById('stmNT')
+
+            if (!zoneNorth.checked) {
+                searchParams.set('zoneNorth', 'false')
+            } else {
+                searchParams.delete('zoneNorth');
+            }
+            if (!zoneSouth.checked) {
+                searchParams.set('zoneSouth', 'false')
+            } else {
+                searchParams.delete('zoneSouth');
+            }
+
+            if (!zoneEast.checked) {
+                searchParams.set('zoneEast', 'false')
+            } else {
+                searchParams.delete('zoneEast');
+            }
+
+            if (!zoneWest.checked) {
+                searchParams.set('zoneWest', 'false')
+            } else {
+                searchParams.delete('zoneWest');
+            }
+
+            if (!spIP.checked) {
+                searchParams.set('spIP', 'false')
+            } else {
+                searchParams.delete('spIP');
+            }
+
+            if (!spSAP.checked) {
+                searchParams.set('spSAP', 'false')
+            } else {
+                searchParams.delete('spSAP');
+            }
+
+            if (!spNone.checked) {
+                searchParams.set('spNone', 'false')
+            } else {
+                searchParams.delete('spNone');
+            }
+
+            if (!chineseMT.checked) {
+                searchParams.set('chineseMT', 'false')
+            } else {
+                searchParams.delete('chineseMT');
+            }
+
+            if (!malayMT.checked) {
+                searchParams.set('malayMT', 'false')
+            } else {
+                searchParams.delete('malayMT');
+            }
+
+            if (!tamilMT.checked) {
+                searchParams.set('tamilMT', 'false')
+            } else {
+                searchParams.delete('tamilMT');
+            }
+
+            /*
+            if (!clubCCA.checked) {
+                searchParams.set('clubCCA', 'false')
+            } else {
+                searchParams.delete('clubCCA');
+            }
+
+            if (!phyCCA.checked) {
+                searchParams.set('phyCCA', 'false')
+            } else {
+                searchParams.delete('phyCCA');
+            }
+
+            if (!ugCCA.checked) {
+                searchParams.set('ugCCA', 'false')
+            } else {
+                searchParams.delete('ugCCA');
+            }
+
+            if (!visualartsCCA.checked) {
+                searchParams.set('visualartsCCA', 'false')
+            } else {
+                searchParams.delete('visualartsCCA');
+            }
+
+            if (!othersCCA.checked) {
+                searchParams.set('othersCCA', 'false')
+            } else {
+                searchParams.delete('othersCCA');
+            } */
+
+            searchParams.delete('page');
+            window.location.search = searchParams.toString();
+        }
+
+        $(document).ready(function() {
+          /*
+            $('.browse')
+                .popup({
+                    inline: true,
+                    position: 'bottom left',
+                    on: 'click',
+                    delay: {
+                        show: 300,
+                        hide: 800
+                    }
+                })
+            */
+            $("#scoreSchool").keyup(function(event) {
+                if (event.keyCode === 13) {
+                    $("#submitSearchBtn").click();
+                }
+            });
+
+        })
+    </script>
 {% endblock %}

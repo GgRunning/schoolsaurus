@@ -1,7 +1,7 @@
 {% extends 'app/baseUserNew.html' %}
 {% block body %}
 <body>
-    <nav class="navbar navbar-expand-md fixed-top navbar-transparent" color-on-scroll="500">
+    <nav class="navbar navbar-expand-md fixed-top navbar-transparent" color-on-scroll="100">
         <div class="container">
             <div class="navbar-translate">
                 <button class="navbar-toggler navbar-toggler-right navbar-burger" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
@@ -22,9 +22,15 @@
                     <li class="nav-item">
                         <a class="nav-link" {% block nav_compare%}{% endblock %} href="{% url 'app:compare_schools' %}">Comparison</a>
                     </li>
+                    <form class="form-inline navbar-form my-2 my-lg-0" style="margin-right:40px;" action='/schools/' method='GET'>
+                        <input class="form-control mr-sm-2 input-sm" type="text" placeholder="Search school" {% if params.school_name %} value={{params.school_name}} {% endif %} name='school_name'>
+                        <button class="btn btn-outline-default btn-sm btn-round" type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </form>
                     {% if user.is_authenticated %}
                     <li class="nav-item">
-                          <a class="btn " href="{% url 'app:profile' %}">Hi, {{ user }}</a>
+                          <a class="btn-outline-success" href="{% url 'app:profile' %}">Hi, {{ user }}</a>
                           <a href="{% url 'sso:logout' %}"  class="btn btn-success btn-round">Logout</a>
                     </li>
                     {% else %}

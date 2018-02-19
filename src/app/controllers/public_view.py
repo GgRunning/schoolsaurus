@@ -1,4 +1,4 @@
-from app.models import SchoolComment
+from app.models import SchoolComment, SchoolCCA
 from app.proxy import SecondarySchoolProxy
 from app.forms import EnquiryForm, CommentForm
 from django.shortcuts import render
@@ -90,7 +90,7 @@ class PublicView():
                 queryset = queryset.filter(school_name__istartswith=request.GET['alphabet'])
 
         # queryset and pagination
-        paginator = Paginator(queryset, 4)  # one page contains 10 items
+        paginator = Paginator(queryset, 8)  # one page contains 10 items
         page = request.GET.get('page')
         try:
             school_list = paginator.page(page)
@@ -128,6 +128,22 @@ class PublicView():
     def school_detail(request, school_id):
         latitude, longitude, has_coordinate = utils.get_coordinate_from_request(request)
         school = get_object_or_404(SecondarySchoolProxy, id=school_id)
+        try:
+            phy_cca_list = SchoolCCA.objects.filter(school_name__icontains=school.school_name, cca_group="PHYSICAL SPORTS")
+        except SchoolCCA.DoesNotExist:
+            pass
+        try:
+            ug_cca_list = SchoolCCA.objects.filter(school_name__icontains=school.school_name, cca_group="UNIFORMED GROUPS")
+        except SchoolCCA.DoesNotExist:
+            pass
+        try:
+            clubs_cca_list = SchoolCCA.objects.filter(school_name__icontains=school.school_name, cca_group="CLUBS AND SOCIETIES")
+        except SchoolCCA.DoesNotExist:
+            pass
+        try:
+            arts_cca_list = SchoolCCA.objects.filter(school_name__icontains=school.school_name, cca_group="VISUAL AND PERFORMING ARTS")
+        except SchoolCCA.DoesNotExist:
+            pass
 
         # queryset and pagination
         queryset = SchoolComment.objects.filter(school=school)
@@ -154,8 +170,12 @@ class PublicView():
                     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
             comment_form = CommentForm()
 
-        return render(request, 'app/school/school_detail.html', {
+        return render(request, 'app/school/school_detailNew.html', {
             'school': school,
+            'phy_cca_list' : phy_cca_list,
+            'ug_cca_list' : ug_cca_list,
+            'clubs_cca_list' : clubs_cca_list,
+            'arts_cca_list' : arts_cca_list,
             'comment_form': comment_form,
             'comment_list': comment_list,
             'has_coordinate': has_coordinate,
@@ -180,7 +200,7 @@ class PublicView():
     def compare_schools(request):
         compare_school_id_list = request.session.get('compare_school_id_list', [])
         compared_school_list = SecondarySchoolProxy.objects.filter(id__in=compare_school_id_list)
-        return render(request, 'app/comparison/index.html', {
+        return render(request, 'app/comparison/indexNew.html', {
             'compared_school_list': compared_school_list
         })
 

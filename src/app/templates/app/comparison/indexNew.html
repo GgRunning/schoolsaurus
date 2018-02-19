@@ -1,0 +1,131 @@
+{% extends 'app/header_baseNew.html' %}
+{% block nav_compare%}
+    class="item active"
+{% endblock %}
+{% load static %}
+{% load app_extras %}
+
+{% block script %}
+    {% if has_coordinate == False %}
+        <script>
+            function run() {
+                if (navigator.geolocation) {
+                    var options = {
+                        enableHighAccuracy: true,
+                        timeout: 15000,
+                        maximumAge: 0
+                    };
+                    navigator.geolocation.getCurrentPosition(showPosition, error, options);
+                } else {
+                    x.innerHTML = "Geolocation is not supported by this browser.";
+                }
+            }
+            function showPosition(position) {
+                var latitude = position.coords.latitude.toString()
+                var longitude = position.coords.longitude.toString()
+                window.location.replace("?latitude=" + latitude.toString() + "&longitude=" + longitude);
+            }
+            function error(err) {
+                console.warn(`ERROR(${err.code}): ${err.message}`);
+                run()
+            }
+            run()
+        </script>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="wrapper">
+    <div class="page-header page-header-xs" data-parallax="true" style="background-image: url( {% static '/faces/login-image.jpg' %} ">
+        <div class="filter"></div>
+        <div class="content">
+            <div class="motto text-center">
+                <h2 class="title-uppercase text-center">Comparison</h2>
+            </div>
+        </div>
+    </div>
+    <div class="main">
+        <div class="section">
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-md-12 ml-auto mr-auto">
+
+
+                        <div class="fresh-table toolbar-color-azure">
+                            <!--    Available colors for the full background: full-color-blue, full-color-azure, full-color-green, full-color-red, full-color-orange
+            Available colors only for the toolbar: toolbar-color-blue, toolbar-color-azure, toolbar-color-green, toolbar-color-red, toolbar-color-orange
+    -->
+                          {% if compared_school_list|length == 0 %}
+                              <h6>
+                                  <center>
+                                      You haven't added any school to compare list
+                                  </center>
+                              </h6>
+                          {% else %}
+                            <table class="table table-responsive">
+                                <thead>
+                                <th></th>
+                                {% for school in compared_school_list %}
+                                <th>
+                                    <a href="{% url 'app:school_detail' school.id %}"> <img src="{% static school.logo_name %}"/></a>
+                                </th>
+                                {% endfor %}
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>School</td>
+                                        {% for school in compared_school_list %}
+                                        <td><a href="{% url 'app:school_detail' school.id %}">{{ school.school_name }}</a></td>
+                                        {% endfor %}
+                                    </tr>
+                                    <tr>
+                                        <td>Zone</td>
+                                        {% for school in compared_school_list %}
+                                            <td>{{ school.zone_code }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    <tr>
+                                        <td>Express</td>
+                                        {% for school in compared_school_list %}
+                                            <td>{{ school.express_nonaff_lower }} - {{ school.express_nonaff_upper }}</td>
+                                        {% endfor %}                                    </tr>
+                                    <tr>
+                                        <td>Normal Academic</td>
+                                        {% for school in compared_school_list %}
+                                            <td>{{ school.normal_academic_nonaff_lower }} - {{ school.normal_academic_nonaff_upper}}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    <tr>
+                                        <td>Normal Technical</td>
+                                        {% for school in compared_school_list %}
+                                            <td>{{ school.normal_technical_nonaff_lower }} - {{ school.normal_technical_nonaff_upper }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    <tr>
+                                        <td>Special Programme</td>
+                                        {% for school in compared_school_list %}
+                                            <td>
+                                              {% if school.ip_ind == 'Yes' %}
+                                              <span>IP</span>
+                                              {% endif %}
+                                              {% if school.sap_ind == 'Yes'%}
+                                              <span>SAP</span>
+                                              {% endif %}
+                                              {% if school.ip_ind == 'No' and school.sap_ind == 'No' %}
+                                              <span>Non-Sp</span>
+                                              {% endif %}
+                                            </td>
+                                        {% endfor %}
+                                    </tr>
+                                </tbody>
+                            </table>
+                            {% endif %}
+                        </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
