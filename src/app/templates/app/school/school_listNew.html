@@ -7,7 +7,7 @@
 
 {% block content %}
 <div class="wrapper">
-    <div class="page-header page-header-xs" data-parallax="true" style="background-image: url({% static '/faces/login-image.jpg' %});">
+    <div class="page-header page-header-xs" data-parallax="false" style="background-image: url({% static '/faces/login-image.jpg' %});">
         <div class="filter"></div>
         <div class="content">
             <div class="motto text-center">
@@ -26,6 +26,7 @@
                             <div class="col-md-12 ml-auto mr-auto">
                                 <div class="btn-toolbar">
                                     <div class="btn-group btn-group-sm">
+                                      <button class="btn btn-outline-default {% if not params.alphabet %}active {% endif %}"  onclick="removeAlphabet()">ALL</button>
                                       {% for item in school_alphabet %}
                                         <a class="btn btn-outline-default {% if item.disabled %}disabled {% endif %}{% if params.alphabet == item.alphabet %}active {% endif %}" href="?alphabet={{item.alphabet}}{{ params_text_without_alphabet }}">
                                           {{ item.alphabet }}
@@ -49,7 +50,7 @@
 
                                         <div class="card-container">
                                             <div class="card">
-                                                <div class="front" style="height:450px">
+                                                <div class="front" style="height:400px">
                                                     <div class="cover">
                                                         <img src="{% static '/faces/antoine-barres.jpg' %}" />
                                                     </div>
@@ -62,7 +63,7 @@
                                                         </div>
                                                     </div>
                                                 </div> <!-- end front panel -->
-                                                <div class="back" style="height:450px">
+                                                <div class="back" style="height:400px">
                                                     <div class="header">
                                                         <!--put mission of school, maximum word count at most 100-->
                                                         <h5 class="motto">{{ school.visionstatement_desc }} </h5>
@@ -73,9 +74,9 @@
                                                             <h4 class="text-center">Cut Off Points</h4>
 
                                                             <p class="text-center">
-                                                                Express: {{ school.express_nonaff_lower }} - {{ school.express_nonaff_upper }}<br />
-                                                                Normal Academic: {{ school.normal_academic_nonaff_lower }} - {{ school.normal_academic_nonaff_upper}}<br />
-                                                                Normal Technical: {{ school.normal_technical_nonaff_lower }} - {{ school.normal_technical_nonaff_upper }}
+                                                                Express: {% if school.express_nonaff_lower == None %} N.A {% else %} {{ school.express_nonaff_lower }} - {{ school.express_nonaff_upper }} {% endif%}<br />
+                                                                Normal Academic: {% if school.normal_academic_nonaff_lower == None %} N.A {% else %} {{ school.normal_academic_nonaff_lower }} - {{ school.normal_academic_nonaff_upper}} {% endif %}<br />
+                                                                Normal Technical: {% if school.normal_technical_nonaff_lower == None %} N.A {% else %} {{ school.normal_technical_nonaff_lower }} - {{ school.normal_technical_nonaff_upper }} {% endif %}
 
                                                             </p>
                                                             <p class="text-center">

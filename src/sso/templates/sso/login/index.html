@@ -39,7 +39,7 @@ $(document)
     })
   ;
 </script>
-<div class="ui center aligned grid" style="margin-top: auto; margin-bottom: auto; width: 100%">
+<div class="ui center aligned grid" style="margin-top: auto; margin-bottom: auto; width: 100%;">
         <div class="three wide column"></div>
         <div class="ten wide column">
             <h2 class="ui teal image header">
@@ -49,11 +49,11 @@ $(document)
             </h2>
             {% if next and not form.errors %}
                 {% if user.is_authenticated %}
-                    <p>
+                    <h4  class="ui teal header">
                         Your account doesn't have access to this page. To proceed, please login with an account that has access.
-                    </p>
+                    </h4>
                 {% else %}
-                    <p>Please login to see this page.</p>
+                    <h4  class="ui teal header">Please login to see this page.</h4>
                 {% endif %}
             {% endif %}
             <form class="ui large form" method="POST">

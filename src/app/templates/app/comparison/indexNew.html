@@ -118,6 +118,15 @@
                                             </td>
                                         {% endfor %}
                                     </tr>
+                                    <tr>
+                                        <td>Special Programme</td>
+                                        {% for school in compared_school_list %}
+                                            <td>
+                                              <a class="btn btn-outline-danger btn-sm" href="{% url 'app:remove_from_comparison' school.id %}">
+                                              <i class="fa fa-remove"></i>Uncompare
+                                              </a>
+                                            </td>
+                                        {% endfor %}
                                 </tbody>
                             </table>
                             {% endif %}

@@ -1,16 +1,18 @@
 {% extends 'app/base.html' %}
 {% block body %}
-    <body style="display: flex; flex-direction: column;">
+    <body style="display: flex; flex-direction: column; background-image: url('/static/faces/schoolbg.jpg'); background-size:cover;">
       <div class="ui grid" style="margin-bottom: 2rem;">
       <div class="two wide column"></div>
       <div class="twelve wide column">
+
             <div class="ui attached secondary menu" style="border: none;">
             </div>
             <div class="ui secondary menu">
                 <div class="item"></div>
-                <a href="{% url 'app:home' %}">
+                <a href="{% url 'app:home' %}" >
                     <img src="/static/logo.png" height="60" />
                 </a>
+                <!--
                 <a {% block nav_school%}{% endblock %} class="item" href="{% url 'app:school_list' %}">Schools</a>
                 <a {% block nav_bookmark%}{% endblock %} class="item" href="{% url 'app:bookmark_list' %}">Bookmark</a>
                 <a {% block nav_compare%}{% endblock %} class="item" href="{% url 'app:compare_schools' %}">Comparison</a>
@@ -26,7 +28,7 @@
                     <div class="item">
                         <a class="ui primary button" href="{% url 'sso:login' %}">Login</a>
                     </div>
-                {% endif %}
+                {% endif %}-->
                 <div class="right menu">
                     <div class="item">
                         <form action='/schools/' method='GET'>
@@ -44,7 +46,7 @@
         <div class="two wide column"></div>
       </div>
 
-        <div class="ui text container" style="display: flex; flex: 1; margin-bottom: 14rem;">
+        <div class="ui text container" style="display: flex; flex: 1; margin-bottom: 14rem; ">
             {% block content %}
             {% endblock %}
         </div>

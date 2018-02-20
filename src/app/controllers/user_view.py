@@ -28,11 +28,8 @@ class UserView():
             school=school
         )
         new_bookmark.save()
-        if has_coordinate:
-            redirect_url = '{}?latitude={}&longitude={}'.format(reverse('app:school_list'), latitude, longitude)
-        else:
-            redirect_url = reverse('app:school_list')
-        return HttpResponseRedirect(redirect_url)
+
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
     @login_required
     def unbookmark(request, school_id):
@@ -44,17 +41,14 @@ class UserView():
             bookmark.delete()
         except Bookmark.DoesNotExist:
             pass
-        if has_coordinate:
-            redirect_url = '{}?latitude={}&longitude={}'.format(reverse('app:school_list'), latitude, longitude)
-        else:
-            redirect_url = reverse('app:school_list')
-        return HttpResponseRedirect(redirect_url)
+        
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
     @login_required
     def bookmark_list(request):
         user = request.user
         bookmark_list = Bookmark.objects.filter(user=user)
-        return render(request, 'app/bookmark/index.html', {'bookmark_list': bookmark_list})
+        return render(request, 'app/bookmark/indexNew.html', {'bookmark_list': bookmark_list})
 
     @login_required
     def report_comment(request, comment_id):
