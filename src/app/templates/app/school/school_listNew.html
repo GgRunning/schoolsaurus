@@ -80,9 +80,10 @@
 
                                                             </p>
                                                             <p class="text-center">
-                                                                <a class="btn btn-outline-danger btn-round" href="{% url 'app:school_detail' school.id %}">More Details</a><br /><br />
+                                                                <a class="btn btn-outline-danger btn-round" href="{% url 'app:school_detail' school.id %}">More Details</a>
                                                                 <!--if not yet bookmarked or compare, class is btn-outline-->
                                                                 {% if user.is_authenticated %}
+                                                                <br /><br />
                                                                     {% if school|is_bookmarked:request.user == True %}
                                                                         {% if has_coordinate == True %}
                                                                             <a class="btn btn-danger btn-round btn-sm" href="{% url 'app:unbookmark' school.id %}?latitude={{ latitude }}&longitude={{ longitude }}">
@@ -100,6 +101,8 @@
                                                                             Bookmark
                                                                         </a>
                                                                     {% endif %}
+                                                                {% else %}
+                                                                      <br /><br/>
                                                                 {% endif %}
 
                                                                 {% if school|is_compared:request == True %}
@@ -112,12 +115,11 @@
                                                                             Compared
                                                                         </a>
                                                                     {% else %}
-                                                                        <br /><br /><a class="btn btn-outline-danger btn-round btn-sm disabled">
+                                                                    <a class="btn btn-outline-danger btn-round btn-sm disabled">
                                                                             Max 6 comparison
                                                                         </a>
                                                                     {% endif %}
                                                                 {% endif %}
-                                                                <br />
                                                             </p>
                                                         </div>
                                                     </div>
@@ -1144,6 +1146,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 {% endblock %}
 

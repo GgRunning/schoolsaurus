@@ -12,7 +12,13 @@ from sso.utils import send_email
 class AdminView():
     @user_passes_test(lambda u: u.is_superuser)
     def index(request):
-        return render(request, 'app/admin_baseNew.html', {'active':'admin_home'})
+        try:
+            user_list = User.objects.all()
+            enquiry_list = Enquiry.objects.filter(status = 'P')
+            report_list = ReportComment.objects.all()
+        except:
+            pass
+        return render(request, 'app/admin_baseNew.html', {'active':'admin_home', 'user_list': len(user_list), 'enquiry_list': len(enquiry_list), 'report_list': len(report_list)})
 
     @user_passes_test(lambda u: u.is_superuser)
     def scheduler_log_list(request):

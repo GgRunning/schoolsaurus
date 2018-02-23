@@ -35,7 +35,7 @@ else:
     DEBUG = True
 
 ALLOWED_HOSTS = [
-    'schoolpedia.herokuapp.com',
+    'schoolsaurus.herokuapp.com',
     'localhost',
 ]
 

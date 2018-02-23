@@ -385,7 +385,7 @@
                                               {{ comment.message }}
                                             </p>
                                             <p class="author">
-                                                by <a href="#pablo"><b>{{ comment.created_by }}</b></a>, {{comment.created_at }}
+                                                by <a href="#pablo"><b>{{ comment.created_by }}</b></a>, {{ comment.created_at|timesince }} ago
                                             </p>
                                             {% if comment.rating >= 1 %}
                                             <i class="fa fa-star text-warning"></i>
@@ -402,13 +402,22 @@
                                             {% if comment.rating >= 5 %}
                                             <i class="fa fa-star text-warning"></i>
                                             {% endif %}
+
+                                            {% if not comment|is_not_reported_by:request.user %}
+                                                <div class="label label-danger">
+                                                    REPORTED!
+                                                </div>
+                                            {% endif %}
+                                            {% if user.is_authenticated and comment|is_not_reported_by:request.user %}
+                                                <a href="{% url 'app:report_comment' comment.id %}" class="btn-sm btn-outline-primary">REPORT</a>
+                                            {% endif %}
                                         </div>
                                         <div class="col-md-2"></div>
                                     </div>
                                 </div><!--END OF REVIEW-->
                                 {% endfor %}
                           {% else %}
-                          <div class="card-description">No Reviews Yet</div>
+                          <h6 class="card-description"><center>No Reviews Yet</center></h6>
             						{% endif %}
                         <center>
                           {% if user.is_authenticated %}

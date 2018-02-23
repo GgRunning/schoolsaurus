@@ -30,8 +30,8 @@
                             <td>{{ report.comment.school.school_name }}</td>
                             <td>{{ report.created_at }}</td>
                             <td>
-                                <a href="{% url 'app:admin_block_user' report.comment.created_by.id %}"><i class="material-icons">lock</i></a>
-                                <a href="{% url 'app:admin_ignore_report' report.id %}"><i class="material-icons">clear</i></a>
+                                <a href="{% url 'app:admin_block_user' report.comment.created_by.id %}" data-toggle="tooltip" title="Block User"><i class="material-icons">lock</i></a>
+                                <a href="{% url 'app:admin_ignore_report' report.id %}" data-toggle="tooltip" title="Ignore Report"><i class="material-icons">clear</i></a>
                             </td>
                         </tr>
                     {% endfor %}

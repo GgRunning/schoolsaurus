@@ -76,7 +76,16 @@
                                     <tr>
                                         <td>School</td>
                                         {% for school in compared_school_list %}
-                                        <td><a href="{% url 'app:school_detail' school.id %}">{{ school.school_name }}</a></td>
+                                        <td>
+                                        <a href="{% url 'app:school_detail' school.id %}">{{ school.school_name }}</a>
+                                        {% if user.is_authenticated %}
+                                            {% if school|is_bookmarked:request.user == True %}
+                                          </br></br><a class="btn btn-danger btn-round btn-sm" href="{% url 'app:unbookmark' school.id %}" data-toggle="tooltip" title="Unbookmark"><i class="fa fa-bookmark"></i></a>
+                                            {% else %}
+                                          </br></br><a class="btn btn-outline-danger btn-round btn-sm" href="{% url 'app:bookmark' school.id %}" data-toggle="tooltip" title="Bookmark"><i class="fa fa-bookmark"></i></a>
+                                            {% endif %}
+                                        {% endif %}
+                                      </td>
                                         {% endfor %}
                                     </tr>
                                     <tr>
@@ -122,14 +131,7 @@
                                         <td></td>
                                         {% for school in compared_school_list %}
                                             <td>
-                                            {% if user.is_authenticated %}
-                                                {% if school|is_bookmarked:request.user == True %}
-                                              <a class="btn btn-danger btn-round btn-sm" href="{% url 'app:unbookmark' school.id %}" data-toggle="tooltip" title="Unbookmark"><i class="fa fa-bookmark"></i></a>
-                                                {% else %}
-                                              <a class="btn btn-outline-danger btn-round btn-sm" href="{% url 'app:bookmark' school.id %}" data-toggle="tooltip" title="Bookmark"><i class="fa fa-bookmark"></i></a>
-                                                {% endif %}
-                                            {% endif %}
-                                              <a class="btn btn-outline-danger btn-sm" href="{% url 'app:remove_from_comparison' school.id %}" style="margin-left:10px">
+                                              <a class="btn btn-outline-danger btn-sm" href="{% url 'app:remove_from_comparison' school.id %}">
                                               <i class="fa fa-remove"></i>Uncompare
                                               </a>
                                             </td>
