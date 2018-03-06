@@ -16,6 +16,7 @@ class PublicView():
         latitude, longitude, has_coordinate = utils.get_coordinate_from_request(request)
         queryset = SecondarySchoolProxy.objects.all()
         queryset_without_alphabet = queryset
+        ccaqueryset = SchoolCCA.objects.filter(school_section__icontains='SECONDARY')
 
         if request.GET:
             if 'score' in request.GET:
@@ -77,10 +78,16 @@ class PublicView():
                     Q(mothertongue1_code='Malay') | Q(mothertongue2_code='Malay') | Q(mothertongue3_code='Malay')
                 )
 
-            if 'tamilMT' in request.GET:
+            if 'tamilMT' not in request.GET:
                 queryset = queryset.filter(
                     Q(mothertongue1_code='Tamil') | Q(mothertongue2_code='Tamil') | Q(mothertongue3_code='Tamil')
                 )
+
+            if 'ncclandUG' in request.GET:
+                print("test")
+                ccaqueryset = ccaqueryset.filter(cca_name__icontains ='NCC (LAND)')
+                for school in ccaqueryset:
+                    queryset = queryset.exclude(Q(school_name__icontains=school.school_name))
 
             if 'sortAsc' in request.GET:
                 queryset = queryset.order_by('-school_name')
