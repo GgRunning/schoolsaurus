@@ -387,6 +387,7 @@
                                             <p class="author">
                                                 by <a href="#pablo"><b>{{ comment.created_by }}</b></a>, {{ comment.created_at|timesince }} ago
                                             </p>
+                                            <!--
                                             {% if comment.rating >= 1 %}
                                             <i class="fa fa-star text-warning"></i>
                                             {% endif %}
@@ -401,7 +402,7 @@
                                             {% endif %}
                                             {% if comment.rating >= 5 %}
                                             <i class="fa fa-star text-warning"></i>
-                                            {% endif %}
+                                            {% endif %} -->
 
                                             {% if not comment|is_not_reported_by:request.user %}
                                                 <div class="label label-danger">
@@ -445,12 +446,14 @@
                     <form method="POST" >
                       {% csrf_token %}
                       <input type="hidden" name="rating" value="5" required="" id="id_rating">
+                        <!--
                         <label>Rating:
                         <i class="fa fa-star text-warning"></i>
                         <i class="fa fa-star text-warning"></i>
                         <i class="fa fa-star text-warning"></i>
                         <i class="fa fa-star text-warning"></i>
                         <i class="fa fa-star text-warning"></i> </label>
+                        -->
                         <textarea class="form-control" rows="4" placeholder="Tell us how you feel about this school..." name="message"></textarea>
                         <center>
                             <button class="btn btn-danger btn-md btn-fill mt-4" type="submit">Submit</button>

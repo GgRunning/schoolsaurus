@@ -217,8 +217,8 @@ class PublicView():
             if form.is_valid():
                 new_enquiry = form.save(commit=False)
                 new_enquiry.save()
-                messages.success(request, 'Successfully submit enquiry')
-                return HttpResponseRedirect(reverse('app:contact_us'))
+                messages.success(request, 'Enquiry submitted')
+                return HttpResponseRedirect(reverse('app:home'))
         else:
             form = EnquiryForm()
         return render(request, 'app/contactus/index.html', {'form': form})

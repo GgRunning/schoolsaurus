@@ -41,7 +41,7 @@ class UserView():
             bookmark.delete()
         except Bookmark.DoesNotExist:
             pass
-        
+
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
     @login_required
@@ -56,7 +56,7 @@ class UserView():
         try:
             new_report = ReportComment.objects.get(reported_by=request.user, comment=comment)
         except ReportComment.DoesNotExist:
-            messages.success(request, 'This comment is successfully reported. Thank you for informing us!')
+            #messages.success(request, 'This comment is successfully reported. Thank you for informing us!')
             new_report = ReportComment(
                 reported_by=request.user,
                 comment=comment

@@ -27,12 +27,12 @@
                          </div>
                          <div class="content">
                            <h4 class="card-title" id="userName"> </h4>
-                           {% if user.is_active %}<small class="text-success">Active</small>{% else %}<small class="text-danger">(Blocked)</small>{% endif %}
-                           <h6 class="category text-gray">{{ user.email }}</h6>
-                           {% if user.is_active == True %}
-                           <a href="{% url 'app:admin_block_user' user.id %}" class="btn btn-danger center">Block User</a>
+                           {% if userD.is_active %}<small class="text-success">Active</small>{% else %}<small class="text-danger">(Blocked)</small>{% endif %}
+                           <h6 class="category text-gray">{{ userD.email }}</h6>
+                           {% if userD.is_active == True %}
+                           <a href="{% url 'app:admin_block_user' userD.id %}" class="btn btn-danger center">Block User</a>
                            {% else %}
-                           <a href="{% url 'app:admin_unblock_user' user.id %}" class="btn btn-primary center">Unlock User</a>
+                           <a href="{% url 'app:admin_unblock_user' userD.id %}" class="btn btn-primary center">Unlock User</a>
                            {% endif %}
                          </div>
                        </div>
@@ -52,20 +52,19 @@
                       <thead class="text-primary">
                         <th>S/N</th>
                         <th>School</th>
-                        <th>Rating</th>
                         <th>Comments</th>
                         <th>Action</th>
                       </thead>
                       <tbody>
-                        {% for comment in user.schoolcomment_set.all %}
+                        {% for comment in userD.schoolcomment_set.all %}
                             <tr>
                                 <td>{{ comment.id }}</td>
                                 <td>{{ comment.school.school_name }} </td>
-                                <td><div class="ui star readonlyrating rating" data-rating="{{ comment.rating }}" data-max-rating="5"></div></td>
+                                <!--<td><div class="ui star readonlyrating rating" data-rating="{{ comment.rating }}" data-max-rating="5"></div></td> -->
                                 <td>{{ comment.message }}</td>
                                 <td>
                                     <a href="{% url 'app:admin_delete_comment' comment.id %}">
-                                        <i class="material-icons">delete</i>
+                                        <i class="material-icons" data-toggle="tooltip" title="Delete comment">delete</i>
                                     </a>
                                 </td>
                             </tr>

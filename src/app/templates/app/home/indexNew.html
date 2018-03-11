@@ -1,4 +1,13 @@
 {% extends 'app/header_baseNew.html' %}
+{% block script %}
+{% if messages %}
+    <script>
+        $(document).ready(function() {
+            window.scrollTo(0,600);
+        })
+    </script>
+{% endif %}
+{% endblock %}
 {% block content %}
 <div class="wrapper">
 <div class="page-header section-dark" style="background-image: url('/static/faces/schoolbg.jpg')">
@@ -42,7 +51,7 @@
                     <h2 class="text-center">Enquiry Form</h2>
                     {% if messages %}
                         {% for message in messages %}
-                            <div class="text-danger">
+                            <div class="text-success text-center">
                                 {{ message }}
                             </div>
                         {% endfor %}

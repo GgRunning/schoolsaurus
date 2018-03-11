@@ -35,7 +35,7 @@
                     </form>
                     {% if user.is_authenticated %}
                     <li class="nav-item">
-                          <a class="btn-outline-success" href="{% url 'app:profile' %}">Hi, {{ user }}</a>
+                          <a class="btn-outline-success" >Hi, {{ user }}</a>
                           <a href="{% url 'sso:logout' %}"  class="btn btn-success btn-round">Logout</a>
                     </li>
                     {% else %}

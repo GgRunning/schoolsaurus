@@ -38,7 +38,7 @@ class AdminView():
     @user_passes_test(lambda u: u.is_superuser)
     def user_detail(request, user_id):
         user = User.objects.get(id=user_id)
-        return render(request, 'app/admin/admin_users_detailNew.html', {'active': 'user', 'user': user})
+        return render(request, 'app/admin/admin_users_detailNew.html', {'active': 'user', 'userD': user})
 
     @user_passes_test(lambda u: u.is_superuser)
     def block_user(request, user_id):
