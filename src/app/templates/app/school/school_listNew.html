@@ -90,7 +90,7 @@
                                                                         {% else %}
                                                                             <a class="btn btn-danger btn-round btn-sm" href="{% url 'app:unbookmark' school.id %}">
                                                                         {% endif %}
-                                                                            Bookmark
+                                                                            Unbookmark
                                                                         </a>
                                                                     {% else %}
                                                                         {% if has_coordinate == True %}
@@ -107,12 +107,12 @@
 
                                                                 {% if school|is_compared:request == True %}
                                                                     <a class="btn btn-danger btn-round btn-sm" href="{% url 'app:remove_from_comparison' school.id %}">
-                                                                        Compared
+                                                                        Uncompare
                                                                     </a>
                                                                 {% else %}
                                                                     {% if allow_compare %}
                                                                         <a class="btn btn-outline-danger btn-round btn-sm" href="{% url 'app:add_to_comparison' school.id %}">
-                                                                            Compared
+                                                                            Compare
                                                                         </a>
                                                                     {% else %}
                                                                     <a class="btn btn-outline-danger btn-round btn-sm disabled">
@@ -1229,7 +1229,7 @@
             }
         }
 
-        function resetSearch () {          
+        function resetSearch () {
           window.location.search = new URLSearchParams("");
           }
 
