@@ -1,2 +1,2 @@
-web: gunicorn --pythonpath src schoolpedia.wsgi --log-file -
+web: gunicorn --pythonpath src schoolsaurus.wsgi --log-file -
 worker: python worker.py
