@@ -1,5 +1,5 @@
 """
-WSGI config for schoolpedia project.
+WSGI config for schoolsaurus project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -13,7 +13,7 @@ from django.core.wsgi import get_wsgi_application
 from whitenoise.django import DjangoWhiteNoise
 
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "schoolpedia.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "schoolsaurus.settings")
 
 application = Sentry(get_wsgi_application())
 application = DjangoWhiteNoise(application)
