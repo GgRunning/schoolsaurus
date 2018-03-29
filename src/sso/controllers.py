@@ -48,7 +48,7 @@ def register(request):
             full_name = user.get_full_name()
             content = 'Hi, {} <br><br> Thank you for registering for SchoolPedia, ' \
                       'Please confirm your email address by clicking the link below. ' \
-                      '<br> <h2><a href=\'http://schoolpedia.herokuapp.com/sso/verify/{}/\'>Validate Account</a></h2>'
+                      '<br> <h2><a href=\'http://schoolsaurus.herokuapp.com/sso/verify/{}/\'>Validate Account</a></h2>'
 
             send_email(
                 user.email,
@@ -81,13 +81,13 @@ def aregister(request):
             user.save()
 
             full_name = user.get_full_name()
-            content = 'Hi, {} <br><br> Thank you for registering for SchoolPedia, ' \
+            content = 'Hi, {} <br><br> Thank you for registering for Schoolsaurus' \
                       'Please confirm your email address by clicking the link below. ' \
-                      '<br> <h2><a href=\'http://schoolpedia.herokuapp.com/sso/verify/{}/\'>Validate Account</a></h2>'
+                      '<br> <h2><a href=\'http://schoolsaurus.herokuapp.com/sso/verify/{}/\'>Validate Account</a></h2>'
 
             send_email(
                 user.email,
-                'SchoolPedia Registration',
+                'Schoolsaurus Registration',
                 content.format(full_name, user.custom_token))
             return HttpResponse("success")
         else:
