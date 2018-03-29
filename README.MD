@@ -1,5 +1,5 @@
 # Schoolsaurus
-Schoolsaurusis an app to help students to find schools easier<br>
+Schoolsaurus is an app to help students to find schools easier<br>
 This is a group project for CZ3002 in NTU
 
 ## Project Description
@@ -17,12 +17,12 @@ The project deliverables can be found on deliverables/ folder
 3. Use the virtualenv `source venv/bin/activate` for LINUX/MAC, for WINDOWS use `venv/Scripts/activate`
 4. install the requirements: `pip install -r requirements.txt`
 5. Go to src/ folder and do initial migration by using `python manage.py migrate`
-6. create superuser using 'python manage.py createsuperuser', ensure that the username is in email format.
+6. create superuser using `python manage.py createsuperuser`, ensure that the username is in email format.
 7. Start the server using `python manage.py runserver`
 8. Login using superuser account to access admin page.
-9. Go to Schedulers tab and click 'manually refresh API' and wait for a few minutes to load the school general and cca info into the database.
+9. Go to Schedulers tab and click MANUALLY REFRESH API and wait for a few minutes to load the school general and CCA data into the    database.
 10. Go to School tab and it will display a list of school if step 9 is completed.
-11. After loading the school data, use console to run importdata file using 'python importdata.py' to link school logo, location and PSLE score to the school.
+11. After loading the school data, use console to run importdata file using `python importdata.py` to link school logo, location and PSLE score to the school.
 12. Re-start the server(step 7) and check that school logos are showing in schools tab. 
 
 ## How to test
