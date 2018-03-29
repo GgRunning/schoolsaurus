@@ -1,7 +1,7 @@
 import os
 import django
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'schoolpedia.settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'schoolsaurus.settings'
 django.setup()
 from django.core.files import File
 from app.models import School
