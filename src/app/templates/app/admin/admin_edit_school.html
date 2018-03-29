@@ -1,9 +1,0 @@
-{% extends 'app/admin_base.html' %}
-{% load semanticui %}
-{% block content %}
-    <form class="ui form" method="POST">
-        {% csrf_token %}
-        {{ form|semanticui }}
-        <button type="submit" class="ui button">Submit</button>
-    </form>
-{% endblock %}
