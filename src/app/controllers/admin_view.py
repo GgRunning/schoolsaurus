@@ -102,15 +102,15 @@ class AdminView():
                 enquiry.save()
 
                 full_name = enquiry.name
-                content = 'Hi, {} <br><br> Thank you for using SchoolPedia. <br><br>' \
-                          'Your enquiry is answered by SchoolPedia Admin! <br><br>' \
+                content = 'Hi, {} <br><br> Thank you for using SchoolSaurus. <br><br>' \
+                          'Your enquiry is answered by SchoolSaurus Admin! <br><br>' \
                           'Q: {} <br>' \
                           'A: {} <br><br>' \
                           'Have a good day!'
 
                 send_email(
                     enquiry.email,
-                    'SchoolPedia Registration',
+                    'SchoolSaurus Enquiry Answered',
                     content.format(full_name, enquiry.message, new_answer.answer))
 
                 return HttpResponseRedirect(reverse('app:admin_enquiries'))

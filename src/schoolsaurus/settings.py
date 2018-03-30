@@ -34,6 +34,8 @@ if env == 'True':
 else:
     DEBUG = True
 
+DEBUG = False
+
 ALLOWED_HOSTS = [
     'schoolsaurus.herokuapp.com',
     'localhost',
@@ -44,7 +46,7 @@ ALLOWED_HOSTS = [
 
 LOGIN_URL = '/sso/login/'
 
-ADMINS = [('Gary', 'garyleeyq@gmail.com')]
+ADMINS = [('Schoolsaurus', 'schoolpediacz2006@gmail.com')]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -160,5 +162,5 @@ EMAIL_HOST_PASSWORD = 'cz2006ntu'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-SECURE_SSL_REDIRECT = not DEBUG
+#SECURE_SSL_REDIRECT = not DEBUG
 TEST_RUNNER = "redgreenunittest.django.runner.RedGreenDiscoverRunner"
