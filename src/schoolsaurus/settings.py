@@ -158,7 +158,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'schoolpediacz2006@gmail.com'
 EMAIL_HOST_PASSWORD = 'cz2006ntu'
 EMAIL_PORT = 465
-EMAIL_USE_SSL = False
+EMAIL_USE_TLS = True
 
 SECURE_SSL_REDIRECT = not DEBUG
 TEST_RUNNER = "redgreenunittest.django.runner.RedGreenDiscoverRunner"
