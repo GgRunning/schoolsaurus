@@ -34,6 +34,8 @@ if env == 'True':
 else:
     DEBUG = True
 
+DEBUG=False
+
 ALLOWED_HOSTS = [
     'schoolsaurus.herokuapp.com',
     'localhost',
@@ -158,7 +160,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'schoolpediacz2006@gmail.com'
 EMAIL_HOST_PASSWORD = 'cz2006ntu'
 EMAIL_PORT = 465
-EMAIL_USE_SSL = True
+EMAIL_USE_SSL = False
 
 SECURE_SSL_REDIRECT = not DEBUG
 TEST_RUNNER = "redgreenunittest.django.runner.RedGreenDiscoverRunner"
