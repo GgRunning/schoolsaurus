@@ -34,6 +34,8 @@ if env == 'True':
 else:
     DEBUG = True
 
+DEBUG = False
+
 ALLOWED_HOSTS = [
     'schoolsaurus.herokuapp.com',
     'localhost',
