@@ -79,13 +79,18 @@ function registerAjax(e){
         if(data=="success")
         {
             $('registerBox').remove();
-            $('.error').addClass('alert alert-success').append("Registration Success! An email verification has been sent, kindly verify your email to activate your account.");
+            $('.error').removeClass().addClass('alert alert-success').html("Registration Success! </br> An email verification has been sent, kindly verify your email to activate your account.");
+            $('#id_first_name').val('');
+            $('#id_last_name').val('');
+            $('#remail').val('');
+            $('#rpassword').val('');
+            $('#rpassword_confirmation').val('');
         }
         else {
             $('#loginModal .modal-dialog').addClass('shake');
             $('.error').empty();   //reset error message
 
-            $('.error').addClass('alert alert-danger').append("Invalid " + data);
+            $('.error').addClass('alert alert-danger').html("Invalid " + data);
 
             $('input[type="password"]').val('');
             setTimeout( function(){

@@ -46,7 +46,7 @@ def register(request):
             user.save()
 
             full_name = user.get_full_name()
-            content = 'Hi, {} <br><br> Thank you for registering for Schoolsaurus, ' \
+            content = 'Hi {}, <br><br> Thank you for registering for Schoolsaurus, ' \
                       'Please confirm your email address by clicking the link below. ' \
                       '<br> <h2><a href=\'http://schoolsaurus.herokuapp.com/sso/verify/{}/\'>Validate Account</a></h2>'
 
@@ -81,7 +81,7 @@ def aregister(request):
             user.save()
 
             full_name = user.get_full_name()
-            content = 'Hi, {} <br><br> Thank you for registering for Schoolsaurus' \
+            content = 'Hi {}, <br><br> Thank you for registering for Schoolsaurus, ' \
                       'Please confirm your email address by clicking the link below. ' \
                       '<br> <h2><a href=\'http://schoolsaurus.herokuapp.com/sso/verify/{}/\'>Validate Account</a></h2>'
 
