@@ -80,7 +80,12 @@
 
                                                             </p>
                                                             <p class="text-center">
-                                                                <a class="btn btn-outline-danger btn-round" href="{% url 'app:school_detail' school.id %}">More Details</a>
+                                                              {% if has_coordinate == True %}
+                                                                  <a class="btn btn-outline-danger btn-round" href="{% url 'app:school_detail' school.id %}?latitude={{ latitude }}&longitude={{ longitude }} %}">More Details</a>
+                                                              {% else %}
+                                                                  <a class="btn btn-outline-danger btn-round" href="{% url 'app:school_detail' school.id %}">More Details</a>
+                                                              {% endif %}
+
                                                                 <!--if not yet bookmarked or compare, class is btn-outline-->
                                                                 {% if user.is_authenticated %}
                                                                 <br /><br />
